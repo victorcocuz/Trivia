@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_categories">
+        <item>@string/category_none</item>
+        <item>@string/category_arts</item>
+        <item>@string/category_geography</item>
+        <item>@string/category_history</item>
+        <item>@string/category_movies</item>
+        <item>@string/category_music</item>
+        <item>@string/category_science</item>
+        <item>@string/category_social_sciences</item>
+        <item>@string/category_sport</item>
+    </string-array>
+</resources>

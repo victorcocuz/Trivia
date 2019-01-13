@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.AddQuestionFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Add Category-->
+            <TextView
+                android:id="@+id/add_question_category_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_categories" />
+
+            <Spinner
+                android:id="@+id/add_question_category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <!--Add Question Body-->
+            <TextView
+                android:id="@+id/add_question_body_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_body" />
+
+            <EditText
+                android:id="@+id/add_question_body_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:autofillHints="@string/question_body_hint"
+                android:hint="@string/question_body_hint"
+                android:inputType="textMultiLine"
+                tools:targetApi="o" />
+
+            <!--Add Correct Answer-->
+            <TextView
+                android:id="@+id/add_question_answer_correct_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_answer_correct" />
+
+            <EditText
+                android:id="@+id/add_question_answer_correct_edit_text"
+                style="@style/QuestionEditText"
+                android:autofillHints="@string/question_answer_correct_hint"
+                android:hint="@string/question_answer_correct_hint"
+                android:inputType="textMultiLine"
+                tools:targetApi="o" />
+
+            <!--Add Incorrect Answer 01-->
+            <TextView
+                android:id="@+id/add_question_answer_incorrect_01_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_answer_incorrect_01" />
+
+            <EditText
+                android:id="@+id/add_question_answer_incorrect_01_edit_text"
+                style="@style/QuestionEditText"
+                android:autofillHints="@string/question_answer_incorrect_01_hint"
+                android:hint="@string/question_answer_incorrect_01_hint"
+                android:inputType="textMultiLine"
+                tools:targetApi="o" />
+
+            <!--Add Incorrect Answer 02-->
+            <TextView
+                android:id="@+id/add_question_answer_incorrect_02_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_answer_incorrect_02" />
+
+            <EditText
+                android:id="@+id/add_question_answer_incorrect_02_edit_text"
+                style="@style/QuestionEditText"
+                android:autofillHints="@string/question_answer_incorrect_02_hint"
+                android:hint="@string/question_answer_incorrect_02_hint"
+                android:inputType="textMultiLine"
+                tools:targetApi="o" />
+
+            <!--Add Incorrect Answer 03-->
+            <TextView
+                android:id="@+id/add_question_answer_incorrect_03_text"
+                style="@style/QuestionTextView"
+                android:text="@string/question_answer_incorrect_03" />
+
+            <EditText
+                android:id="@+id/add_question_answer_incorrect_03_edit_text"
+                style="@style/QuestionEditText"
+                android:autofillHints="@string/question_answer_incorrect_03_hint"
+                android:hint="@string/question_answer_incorrect_03_hint"
+                android:inputType="textMultiLine"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/add_question_description"
+                style="@style/QuestionTextView"
+                android:text="@string/question_answer_incorrect_03" />
+
+            <!--Submit Question-->
+            <TextView
+                android:id="@+id/add_question_submit"
+                style="@style/Buttons"
+                android:text="@string/question_submit" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

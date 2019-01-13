@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/card_answers_tv_answer_1"
+            style="@style/Buttons"
+            android:text="@string/question_answer_correct" />
+
+    </android.support.v7.widget.CardView>
+</layout>

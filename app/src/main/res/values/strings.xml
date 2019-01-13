@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Trivia</string>
+
+    <!--Fragments-->
+    <string name="fragment_play">Play</string>
+    <string name="fragment_user">User</string>
+    <string name="fragment_rankings">Rankings</string>
+    <string name="fragment_add_questions">Add Questions</string>
+
+    <!--Questions-->
+    <string name="question_categories">Categories</string>
+    <string name="question_body">Question</string>
+    <string name="question_body_hint">Write the question here</string>
+    <string name="question_answer_correct">Correct Answer</string>
+    <string name="question_answer_correct_hint">Write the correct answer here</string>
+    <string name="question_answer_incorrect_01">Incorrect Answer 1</string>
+    <string name="question_answer_incorrect_01_hint">Write the first incorrect answer here</string>
+    <string name="question_answer_incorrect_02">Incorrect Answer 2</string>
+    <string name="question_answer_incorrect_02_hint">Write the second incorrect answer here</string>
+    <string name="question_answer_incorrect_03">Incorrect Answer 3</string>
+    <string name="question_answer_incorrect_03_hint">Write the third incorrect answer here</string>
+    <string name="question_answer_description">Question Description</string>
+    <string name="question_answer_description_hint">Write a brief description of your question here </string>
+    <string name="question_answer_photo_url">Questoin Photo Url</string>
+    <string name="question_answer_photo_url_hint">Add the photo URL here.</string>
+    <string name="question_submit">Submit Question</string>
+
+    <!--Game Activity-->
+    <string name="temp_btn_finish_game">Finish Game</string>
+
+    <!--Game Categories-->
+    <string name="category_none">Select a category</string>
+    <string name="category_arts">Arts and Culture</string>
+    <string name="category_geography">Geography</string>
+    <string name="category_history">History</string>
+    <string name="category_movies">Movies</string>
+    <string name="category_music">Music</string>
+    <string name="category_science">Science</string>
+    <string name="category_social_sciences">Social Sciences</string>
+    <string name="category_sport">Sport</string>
+
+    <string name="category_none_description">Please select a category to continue</string>
+    <string name="question_incomplete_description">Please complete all question fields</string>
+</resources>
+
