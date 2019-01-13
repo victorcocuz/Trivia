@@ -19,6 +19,7 @@ public class Question implements Parcelable {
     private String questionDescription;
     private String questionPhotoUrl;
 
+    //Parcelable Implementation
     public static final Creator<Question> CREATOR = new Creator<Question>() {
         @Override
         public Question createFromParcel(Parcel in) {
@@ -31,18 +32,9 @@ public class Question implements Parcelable {
         }
     };
 
-    public Question() {
-    }
-
-    private Question(Parcel in) {
-        questionCategory = in.readInt();
-        questionBody = in.readString();
-        questionCorrectAnswer = in.readString();
-        questionIncorrectAnswer01 = in.readString();
-        questionIncorrectAnswer02 = in.readString();
-        questionIncorrectAnswer03 = in.readString();
-        questionDescription = in.readString();
-        questionPhotoUrl = in.readString();
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
@@ -57,13 +49,22 @@ public class Question implements Parcelable {
         parcel.writeString(questionPhotoUrl);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    //Constructors
+    private Question(Parcel in) {
+        questionCategory = in.readInt();
+        questionBody = in.readString();
+        questionCorrectAnswer = in.readString();
+        questionIncorrectAnswer01 = in.readString();
+        questionIncorrectAnswer02 = in.readString();
+        questionIncorrectAnswer03 = in.readString();
+        questionDescription = in.readString();
+        questionPhotoUrl = in.readString();
     }
 
-    public Question(int questionCategory,
-                    String questionBody, String questionCorrectAnswer, String questionIncorrectAnswer01, String questionIncorrectAnswer02, String questionIncorrectAnswer03, String questionAnswerDescription, String questionPhotoUrl) {
+    public Question() {
+    }
+
+    public Question(int questionCategory, String questionBody, String questionCorrectAnswer, String questionIncorrectAnswer01, String questionIncorrectAnswer02, String questionIncorrectAnswer03, String questionAnswerDescription, String questionPhotoUrl) {
         this.questionCategory = questionCategory;
         this.questionBody = questionBody;
         this.questionCorrectAnswer = questionCorrectAnswer;
@@ -74,6 +75,7 @@ public class Question implements Parcelable {
         this.questionPhotoUrl = questionPhotoUrl;
     }
 
+    //Getters
     public int getQuestionCategory() {
         return questionCategory;
     }

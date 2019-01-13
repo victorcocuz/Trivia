@@ -2,12 +2,8 @@ package com.example.victor.trivia.helpers;
 
 //Contract imports
 
-import com.example.victor.trivia.data.TriviaContract;
-import com.example.victor.trivia.data.TriviaContract.UsersEntry;
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.GamesEntry;
 import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
-import com.example.victor.trivia.objects.Answered;
 
 /******
  * Created by Victor on 12/4/2018.
@@ -16,14 +12,15 @@ public class Constants {
     public static final int INTENT_TO_GAME_REQUEST_CODE = 1;
     public static final String INTENT_TO_GAME_RETURN_KEY = "result";
 
-    //    Questions
-    public enum questionTypes {
-        WRITE, TRUE_FALSE, MULTIPLE_CHOICE
-    }
-
-    public enum questionTopics {GEOGRAPHY,}
+    //Intents
+    public static final String INTENT_ACTIVITY_RESULT_ANSWER_ARRAY = "activityResultAnswerArray";
+    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_QUESTIONS = "activityResultScoreTotalQuestions";
+    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_TIME = "activityResultScoreTotalTime";
+    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS = "activityResultNumberQuestions";
+    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS_CORRECT = "activityResultNumberQuestionsCorrect";
 
     //Database tables
+    // TODO: 1/13/2019 delete this
     public static final String DATABASE_TABLE_QUESTIONS = "questions";
 
     //Question Categories
@@ -61,13 +58,9 @@ public class Constants {
     };
 
     public static final String[] PROJECTION_ANSWERS = new String[]{
-            AnsweredEntry.ANSWERED_FIREBASE_ID,
-            AnsweredEntry.ANSWERD_STATUS,
+            AnsweredEntry.ANSWERED_FIREBASE_QUESTION_ID,
+            AnsweredEntry.ANSWERED_STATUS,
             AnsweredEntry.ANSWERED_ANSWER
     };
 
-    //Score
-    public static final int TIMER_QUESTION_INTERVAL = 10000;
-    public static final int TIMER_TICK_INTERVAL = 1000;
-    public static final int SCORE_PER_QUESTION = 10;
 }

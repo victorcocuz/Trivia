@@ -38,8 +38,13 @@ public class TriviaDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_TABLE_QUESTIONS_ANSWERED = "CREATE TABLE " + AnsweredEntry.ANSWERED_TABLE_NAME + " ("
                 + AnsweredEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + AnsweredEntry.ANSWERED_FIREBASE_ID + " TEXT UNIQUE, "
-                + AnsweredEntry.ANSWERD_STATUS + " TEXT, "
-                + AnsweredEntry.ANSWERED_ANSWER + " TEXT);";
+                + AnsweredEntry.ANSWERED_FIREBASE_USER_ID + " TEXT, "
+                + AnsweredEntry.ANSWERED_FIREBASE_QUESTION_ID + " TEXT, "
+                + AnsweredEntry.ANSWERED_STATUS + " TEXT, "
+                + AnsweredEntry.ANSWERED_ANSWER + " TEXT, "
+                + AnsweredEntry.ANSWERED_SCORE_QUESTION + " INTEGER, "
+                + AnsweredEntry.ANSWERED_SCORE_TIME + " INTEGER, "
+                + AnsweredEntry.ANSWERED_TIME + " TEXT);";
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_QUESTIONS_ANSWERED);
     }
 

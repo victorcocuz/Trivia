@@ -9,5 +9,5 @@ public class User {
     private int userId;
     private int userPoints;
     private int userLevel;
-    private List<Answered> userQuestionsAnswered;
+    private List<Answer> userQuestionsAnswered;
 }

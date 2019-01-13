@@ -67,7 +67,12 @@ public class TriviaContract {
 
         public static final String ANSWERED_TABLE_NAME = "answeredTable";
         public static final String ANSWERED_FIREBASE_ID = "answeredFirebaseId";
-        public static final String ANSWERD_STATUS = "answeredStatus";
+        public static final String ANSWERED_FIREBASE_USER_ID = "answeredFirebaseUserId";
+        public static final String ANSWERED_FIREBASE_QUESTION_ID = "answeredFirebaseQuestionId";
+        public static final String ANSWERED_STATUS = "answeredStatus";
         public static final String ANSWERED_ANSWER = "answeredAnswer";
+        public static final String ANSWERED_SCORE_QUESTION = "answeredScoreQuestion";
+        public static final String ANSWERED_SCORE_TIME = "answeredScoreTime";
+        public static final String ANSWERED_TIME = "answeredTime";
     }
 }

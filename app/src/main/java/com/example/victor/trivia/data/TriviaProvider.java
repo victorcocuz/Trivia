@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.GamesEntry;
 import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
-import com.example.victor.trivia.objects.Answered;
 
 import timber.log.Timber;
 

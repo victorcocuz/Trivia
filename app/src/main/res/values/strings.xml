@@ -21,7 +21,7 @@
     <string name="question_answer_incorrect_03_hint">Write the third incorrect answer here</string>
     <string name="question_answer_description">Question Description</string>
     <string name="question_answer_description_hint">Write a brief description of your question here </string>
-    <string name="question_answer_photo_url">Questoin Photo Url</string>
+    <string name="question_answer_photo_url">Question Photo Url</string>
     <string name="question_answer_photo_url_hint">Add the photo URL here.</string>
     <string name="question_submit">Submit Question</string>
 
@@ -41,5 +41,8 @@
 
     <string name="category_none_description">Please select a category to continue</string>
     <string name="question_incomplete_description">Please complete all question fields</string>
+
+    <!--Toast Messages-->
+    <string name="toast_no_more_questions">Congratulations! You answered correctly all questions in this demo version. Good to know. You can always check out your answers in the user section… Or you can reset and start again :)</string>
 </resources>
 

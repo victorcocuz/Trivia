@@ -12,12 +12,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TableLayout;
 
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.adapters.FragmentAdapter;
-import com.example.victor.trivia.data.TriviaContract;
 import com.example.victor.trivia.databinding.ActivityMainBinding;
 import com.example.victor.trivia.helpers.Constants;
 import com.example.victor.trivia.objects.Question;
@@ -30,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 //Helpers
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
 
 import timber.log.Timber;
 
@@ -45,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Timber.plant(new Timber.DebugTree());
         Stetho.initializeWithDefaults(this);
+        // TODO: 1/13/2019 check internet connection
 
         //Set up fragments and tab layout
         ViewPager generalViewPager = findViewById(R.id.main_activity_view_pager);
@@ -59,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader onCreateLoader(int i, @Nullable Bundle bundle) {
-        String[] projection = {AnsweredEntry.ANSWERED_FIREBASE_ID};
+        String[] projection = {QuestionsEntry.QUESTIONS_FIREBASE_ID};
         return new CursorLoader(this,
-                AnsweredEntry.ANSWERED_URI,
+                QuestionsEntry.QUESTIONS_URI,
                 projection,
                 null,
                 null,
@@ -70,50 +67,43 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(@NonNull Loader loader, Object data) {
-        final Cursor cursor = (Cursor) data;
+        final Cursor cursorQuestions = (Cursor) data;
 
-        //Setup Firebase;
+        //Setup Firebase and synchronize with local database;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference questionsDatabaseReference = firebaseDatabase.getReference().child(Constants.DATABASE_TABLE_QUESTIONS);
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String key;
-                Question addedQuestion = dataSnapshot.getValue(Question.class);
+                Question question = dataSnapshot.getValue(Question.class);
 
-                if (addedQuestion != null) {
-                    Boolean questionAdded = false;
+                if (question != null) {
+                    Boolean questionIsAlreadyAdded = false;
                     key = dataSnapshot.getKey();
 
-                    if (cursor != null && key != null) {
-                        if (cursor.getCount() > 0) {
-                            for (int i = 0; i < cursor.getCount(); i++) {
-                                cursor.moveToPosition(i);
-                                if (key.equals(cursor.getString(cursor.getColumnIndex(AnsweredEntry.ANSWERED_FIREBASE_ID)))) {
-                                    questionAdded = true;
+                    if (cursorQuestions != null && key != null) {
+                        if (cursorQuestions.getCount() > 0) {
+                            for (int i = 0; i < cursorQuestions.getCount(); i++) {
+                                cursorQuestions.moveToPosition(i);
+                                if (key.equals(cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_FIREBASE_ID)))) {
+                                    questionIsAlreadyAdded = true;
                                 }
                             }
                         }
-                        if (!questionAdded) {
-                            //Add to Questions Table
+                        if (!questionIsAlreadyAdded) {
+                            //Add question to Questions Table in Database
                             ContentValues questionValues = new ContentValues();
                             questionValues.put(QuestionsEntry.QUESTIONS_FIREBASE_ID, key);
-                            questionValues.put(QuestionsEntry.QUESTIONS_CATEGORY, addedQuestion.getQuestionCategory());
-                            questionValues.put(QuestionsEntry.QUESTIONS_BODY, addedQuestion.getQuestionBody());
-                            questionValues.put(QuestionsEntry.QUESTIONS_CORRECT_ANSWER, addedQuestion.getQuestionCorrectAnswer());
-                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_01, addedQuestion.getQuestionIncorrectAnswer01());
-                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_02, addedQuestion.getQuestionIncorrectAnswer02());
-                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_03, addedQuestion.getQuestionIncorrectAnswer03());
-                            questionValues.put(QuestionsEntry.QUESTIONS_ANSWER_DESCRIPTION, addedQuestion.getQuestionDescription());
-                            questionValues.put(QuestionsEntry.QUESTIONS_PHOTO_URL, addedQuestion.getQuestionPhotoUrl());
+                            questionValues.put(QuestionsEntry.QUESTIONS_CATEGORY, question.getQuestionCategory());
+                            questionValues.put(QuestionsEntry.QUESTIONS_BODY, question.getQuestionBody());
+                            questionValues.put(QuestionsEntry.QUESTIONS_CORRECT_ANSWER, question.getQuestionCorrectAnswer());
+                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_01, question.getQuestionIncorrectAnswer01());
+                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_02, question.getQuestionIncorrectAnswer02());
+                            questionValues.put(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_03, question.getQuestionIncorrectAnswer03());
+                            questionValues.put(QuestionsEntry.QUESTIONS_ANSWER_DESCRIPTION, question.getQuestionDescription());
+                            questionValues.put(QuestionsEntry.QUESTIONS_PHOTO_URL, question.getQuestionPhotoUrl());
                             getApplicationContext().getContentResolver().insert(QuestionsEntry.QUESTIONS_URI, questionValues);
-
-                            //Add to Answers Table (at the beginning this will be a more compact version of the questions table, but slowly it will get populated with the user's progress
-                            ContentValues answeredValues = new ContentValues();
-                            answeredValues.put(AnsweredEntry.ANSWERED_FIREBASE_ID, key);
-                            answeredValues.put(AnsweredEntry.ANSWERED_ANSWER, "");
-                            answeredValues.put(AnsweredEntry.ANSWERD_STATUS, Constants.ANSWER_STATUS_NO_ANSWER);
-                            getApplicationContext().getContentResolver().insert(AnsweredEntry.ANSWERED_URI, answeredValues);
                         }
                     } else {
                         Timber.e("Could not download questions from FireBase");

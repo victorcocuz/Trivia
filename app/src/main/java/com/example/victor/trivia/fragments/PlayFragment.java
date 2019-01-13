@@ -38,6 +38,7 @@ public class PlayFragment extends Fragment {
             public void onClick(View view) {
                 Intent startGameForIntent = new Intent(rootView.getContext(), GameActivity.class);
                 startActivityForResult(startGameForIntent, Constants.INTENT_TO_GAME_REQUEST_CODE);
+//                startActivity(startGameForIntent);
             }
         });
         return rootView;
@@ -47,7 +48,7 @@ public class PlayFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.INTENT_TO_GAME_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String result = data.getStringExtra(Constants.INTENT_TO_GAME_RETURN_KEY);
                 startPlayView.setText(result);
             }

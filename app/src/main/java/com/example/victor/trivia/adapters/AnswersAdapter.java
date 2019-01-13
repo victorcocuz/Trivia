@@ -1,5 +1,6 @@
 package com.example.victor.trivia.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,29 +16,34 @@ import java.util.List;
  ******/
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswersViewHolder> {
 
+    private Context context;
     private List<String> answers;
 
     public interface AnswersAdapterOnClickHandler {
         void OnClick(String answer);
     }
+
     private final AnswersAdapterOnClickHandler answersAdapterOnClickHandler;
 
-    public AnswersAdapter (AnswersAdapterOnClickHandler answersAdapterOnClickHandler) {
+    public AnswersAdapter(Context context, AnswersAdapterOnClickHandler answersAdapterOnClickHandler) {
         this.answersAdapterOnClickHandler = answersAdapterOnClickHandler;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public AnswersViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
         CardAnswersBinding cardAnswersBinding = CardAnswersBinding.inflate(layoutInflater, viewGroup, false);
         return new AnswersViewHolder(cardAnswersBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AnswersViewHolder answersViewHolder, int i) {
-        if (answers.size() > 0) {
-            answersViewHolder.cardAnswersBinding.cardAnswersTvAnswer1.setText(answers.get(i));
+        if (answers != null) {
+            if (answers.size() > 0) {
+                answersViewHolder.cardAnswersBinding.cardAnswersTvAnswer1.setText(answers.get(i));
+            }
         }
 
     }
