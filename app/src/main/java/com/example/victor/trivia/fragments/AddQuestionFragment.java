@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.objects.Question;
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.databinding.FragmentAddQuestionBinding;
@@ -35,6 +36,8 @@ public class AddQuestionFragment extends Fragment {
     private String questionBody;
     private String questionAnswerCorrect;
     private String questionAnswerIncorrect01, questionAnswerIncorrect02, questionAnswerIncorrect03;
+    private String questionDescription;
+    private String questionPhotoUrl;
 
     //Listen for changes
     private boolean questionHasChanged = false;
@@ -59,7 +62,7 @@ public class AddQuestionFragment extends Fragment {
 
         //Setup Firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
-        questionsDatabaseReference = firebaseDatabase.getReference().child(Constants.DATABASE_TABLE_QUESTIONS);
+        questionsDatabaseReference = firebaseDatabase.getReference().child(QuestionsEntry.QUESTIONS_TABLE_NAME);
 
         //Setup Spinner
         ArrayAdapter spinnerCategoryAdapter = ArrayAdapter.createFromResource(getContext(), R.array.array_categories, android.R.layout.simple_spinner_item);
@@ -104,19 +107,23 @@ public class AddQuestionFragment extends Fragment {
         binding.addQuestionAnswerIncorrect01EditText.setOnTouchListener(touchListener);
         binding.addQuestionAnswerIncorrect02EditText.setOnTouchListener(touchListener);
         binding.addQuestionAnswerIncorrect03EditText.setOnTouchListener(touchListener);
+        binding.addQuestionDescriptionEditText.setOnTouchListener(touchListener);
+        binding.addQuestionPhotoUrlEditText.setOnTouchListener(touchListener);
 
         //Submit Question
         binding.addQuestionSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (questionCategory == Constants.QUESTION_CATEGORY_NONE) {
-                    Toast.makeText(getContext(), R.string.category_none_description, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.toast_category_none_description, Toast.LENGTH_SHORT).show();
                 } else if (binding.addQuestionBodyEditText.getText().length() == 0
                         || binding.addQuestionAnswerCorrectEditText.getText().length() == 0
                         || binding.addQuestionAnswerIncorrect01EditText.getText().length() == 0
                         || binding.addQuestionAnswerIncorrect02EditText.getText().length() == 0
-                        || binding.addQuestionAnswerIncorrect03EditText.getText().length() == 0) {
-                    Toast.makeText(getContext(), R.string.question_incomplete_description, Toast.LENGTH_SHORT).show();
+                        || binding.addQuestionAnswerIncorrect03EditText.getText().length() == 0
+                        || binding.addQuestionDescriptionEditText.getText().length() == 0
+                        || binding.addQuestionPhotoUrlEditText.getText().length() == 0) {
+                    Toast.makeText(getContext(), R.string.toast_question_incomplete_description, Toast.LENGTH_SHORT).show();
                 } else {
                     //Get Question and Answers from EditText
                     questionBody = binding.addQuestionBodyEditText.getText().toString();
@@ -124,6 +131,8 @@ public class AddQuestionFragment extends Fragment {
                     questionAnswerIncorrect01 = binding.addQuestionAnswerIncorrect01EditText.getText().toString();
                     questionAnswerIncorrect02 = binding.addQuestionAnswerIncorrect02EditText.getText().toString();
                     questionAnswerIncorrect03 = binding.addQuestionAnswerIncorrect03EditText.getText().toString();
+                    questionDescription = binding.addQuestionDescriptionEditText.getText().toString();
+                    questionPhotoUrl = binding.addQuestionPhotoUrlEditText.getText().toString();
 
                     Question question = new Question(questionCategory,
                             questionBody,
@@ -131,8 +140,8 @@ public class AddQuestionFragment extends Fragment {
                             questionAnswerIncorrect01,
                             questionAnswerIncorrect02,
                             questionAnswerIncorrect03,
-                            null,
-                            null);
+                            questionDescription,
+                            questionPhotoUrl);
                     questionsDatabaseReference.push().setValue(question);
                     Toast.makeText(getContext(), "Question was submitted", Toast.LENGTH_SHORT).show();
                 }

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.example.victor.trivia.helpers.Constants;
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
 import com.example.victor.trivia.objects.Answer;
+import com.example.victor.trivia.objects.Question;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -52,33 +54,38 @@ public class GameActivity extends AppCompatActivity implements
     public AnswersAdapter answersAdapter;
 
     //For question building
-    private String questionCorrectAnswer;
+    ArrayList<String> answers;
+    private String questionCorrectAnswer, questionBody;
     public String questionFirebaseId;
     private String[] questionsSelectionArgs = null;
     private String questionsSelection = null;
+    private List<Integer> cursorPositions = null;
 
     //For scoring
     CountDownTimer countDownTimer;
     long timeLeft;
-    int scoreQuestion;
-    int scoreTime;
-    int scoreTotalQuestions;
-    int scoreTotalTime;
-    int scoreGame;
-    int questionsRemaining;
+    int scoreQuestion, scoreTime, scoreTotalQuestions, scoreTotalTime;
+    int numberOfQuestionsRemaining, numberOfQuestionsAnswered, numberOfQuestionsAnsweredCorrect;
     float answerTime;
-    int numberOfQuestionsAnswered;
-    int numberOfQuestionsAnsweredCorrect;
 
-    //Others
-    ArrayList<Answer> gameAnswers;
+    //Extras for result
+    ArrayList<Answer> forResultAnswers = new ArrayList<>();
+    ArrayList<Question> forResultQuestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_game);
 
-        questionsRemaining = 10;
+        //Reset score
+        // TODO: 1/14/2019 change to 10
+        numberOfQuestionsRemaining = 5;
+        numberOfQuestionsAnswered = 0;
+        numberOfQuestionsAnsweredCorrect = 0;
+        scoreQuestion = 0;
+        scoreTime = 0;
+        scoreTotalQuestions = 0;
+        scoreTotalTime = 0;
 
         //Set up recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -152,7 +159,6 @@ public class GameActivity extends AppCompatActivity implements
                         }
 
                         questionsSelection = questionSelectionBuilder.toString();
-                        Timber.e("SELECTION BUILDER IS%s", questionsSelection);
 
                     } else {
                         Timber.v("There are no answers yet in the Database");
@@ -172,11 +178,20 @@ public class GameActivity extends AppCompatActivity implements
                 cursorQuestions = (Cursor) data;
                 if (cursorQuestions != null) {
                     if (cursorQuestions.getCount() > 0) {
+
                         //If there are less than 10 questions remaining in the database, questions remaining will be reassigned
-                        if (cursorQuestions.getCount() < 10) {
-                            questionsRemaining = cursorQuestions.getCount();
+                        // TODO: 1/14/2019 change to 10
+                        if (cursorQuestions.getCount() < 5) {
+                            numberOfQuestionsRemaining = cursorQuestions.getCount() - 1;
                         }
-                        Timber.e("question count %s", cursorQuestions.getCount());
+
+                        //Create a random order for the cursor
+                        cursorPositions = new ArrayList<>();
+                        for (int i = 0; i < cursorQuestions.getCount(); i++) {
+                            cursorPositions.add(i);
+                        }
+                        Collections.shuffle(cursorPositions);
+
                         //Load Question
                         loadNextQuestion(cursorQuestions);
                     } else {
@@ -196,12 +211,69 @@ public class GameActivity extends AppCompatActivity implements
         getLoaderManager().destroyLoader(LOADER_ID_CURSOR_QUESTIONS);
     }
 
+    @Override
+    public void OnClick(String chosenAnswer) {
+        countDownTimer.cancel();
+        int answeredStatus = Constants.ANSWER_STATUS_INCORRECT;
+
+        //Calculate score for all answers
+        numberOfQuestionsAnswered++;
+        scoreQuestion = 0;
+        scoreTime = 0;
+        answerTime = (getResources().getInteger(R.integer.score_timer_question_interval) - timeLeft) / (float) getResources().getInteger(R.integer.score_timer_tick_interval);
+        NumberFormat formatter = NumberFormat.getNumberInstance();
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
+        String formattedAnswerTime = formatter.format(answerTime);
+
+        //Calculate score for correct answers
+        if (chosenAnswer.equals(questionCorrectAnswer)) {
+            numberOfQuestionsAnsweredCorrect++;
+            // TODO: 1/14/2019 remove the fuck
+            Toast.makeText(this, "FUCK YEAH", Toast.LENGTH_SHORT).show();
+            answeredStatus = Constants.ANSWER_STATUS_CORRECT;
+            scoreTime = Math.round(timeLeft / (getResources().getInteger(R.integer.score_timer_tick_interval))) + 1;
+            scoreTotalTime = scoreTotalTime + scoreTime;
+            scoreQuestion = getResources().getInteger(R.integer.score_per_question);
+            scoreTotalQuestions = scoreTotalQuestions + scoreQuestion;
+        }
+
+        //Add information for result;
+        Question forResultQuestion = new Question(
+                cursorQuestions.getInt(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_CATEGORY)),
+                questionBody,
+                answers.get(0),
+                answers.get(1),
+                answers.get(2),
+                answers.get(3),
+                cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_ANSWER_DESCRIPTION)),
+                cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_PHOTO_URL)));
+        forResultQuestions.add(forResultQuestion);
+
+        Answer forResultAnswer = new Answer(questionFirebaseId,
+                answeredStatus,
+                chosenAnswer,
+                scoreQuestion,
+                scoreTime,
+                formattedAnswerTime);
+        forResultAnswers.add(forResultAnswer);
+
+        //If the quiz is not over, load next question. If the quiz is over go to result activity
+        if (numberOfQuestionsRemaining > 0) {
+            loadNextQuestion(cursorQuestions);
+        } else {
+            StartResultActivity();
+        }
+    }
+
     private void loadNextQuestion(final Cursor cursorQuestions) {
-        //Load question from cursorQuestions into adapter
-        Random random = new Random();
-        cursorQuestions.moveToPosition(random.nextInt(cursorQuestions.getCount()));
+        Timber.e("number of questions remaining is %s", numberOfQuestionsRemaining);
+        numberOfQuestionsRemaining = numberOfQuestionsRemaining - 1;
+
+        //Load question from cursorQuestions into adapter in a random and non repeating order
+        cursorQuestions.moveToPosition(cursorPositions.get(numberOfQuestionsRemaining));
         questionFirebaseId = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_FIREBASE_ID));
-        String questionBody = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_BODY));
+        questionBody = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_BODY));
         questionCorrectAnswer = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_CORRECT_ANSWER));
         String questionIncorrectAnswer1 = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_01));
         String questionIncorrectAnswer2 = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_02));
@@ -209,7 +281,7 @@ public class GameActivity extends AppCompatActivity implements
 
         //Shuffle answer options
         binding.activityGameTvQuestion.setText(questionBody);
-        List<String> answers = new ArrayList<>();
+        answers = new ArrayList<>();
         answers.add(questionCorrectAnswer);
         answers.add(questionIncorrectAnswer1);
         answers.add(questionIncorrectAnswer2);
@@ -226,7 +298,7 @@ public class GameActivity extends AppCompatActivity implements
             }
 
             public void onFinish() {
-                if (questionsRemaining > 0) {
+                if (numberOfQuestionsRemaining > 0) {
                     loadNextQuestion(cursorQuestions);
                 } else {
                     StartResultActivity();
@@ -235,54 +307,10 @@ public class GameActivity extends AppCompatActivity implements
         }.start();
     }
 
-    @Override
-    public void OnClick(String chosenAnswer) {
-        countDownTimer.cancel();
-        int answeredStatus = Constants.ANSWER_STATUS_INCORRECT;
-        numberOfQuestionsAnswered ++;
-        scoreQuestion = 0;
-        scoreTime = 0;
-        answerTime = (getResources().getInteger(R.integer.score_timer_question_interval) - timeLeft) / (float) getResources().getInteger(R.integer.score_timer_tick_interval);
-
-        NumberFormat formatter = NumberFormat.getNumberInstance();
-        formatter.setMinimumFractionDigits(2);
-        formatter.setMaximumFractionDigits(2);
-        String formattedAnswerTime = formatter.format(answerTime);
-
-        //Calculate score for correct answers
-        if (chosenAnswer.equals(questionCorrectAnswer)) {
-            Toast.makeText(this, "FUCK YEAH", Toast.LENGTH_SHORT).show();
-            answeredStatus = Constants.ANSWER_STATUS_CORRECT;
-            scoreTime = Math.round(timeLeft / (getResources().getInteger(R.integer.score_timer_tick_interval)));
-            scoreTotalTime = scoreTotalTime + scoreTime;
-            scoreQuestion = getResources().getInteger(R.integer.score_per_question);
-            scoreTotalQuestions = scoreTotalQuestions + scoreQuestion;
-            numberOfQuestionsAnsweredCorrect ++;
-        }
-
-        //Add answer to database
-        Answer answer = new Answer(questionFirebaseId,
-                answeredStatus,
-                chosenAnswer,
-                scoreQuestion,
-                scoreTime,
-                formattedAnswerTime);
-        gameAnswers.add(answer);
-
-        //If the quiz is not over, load next question. If the quiz is over go to result activity
-        if (questionsRemaining > 0) {
-            loadNextQuestion(cursorQuestions);
-            Timber.e("QUESTIONS REMAINING %s", questionsRemaining);
-            questionsRemaining = questionsRemaining - 1;
-        } else {
-            scoreGame = scoreTotalQuestions + scoreTotalTime;
-            Toast.makeText(this, "Quiz is over", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void StartResultActivity() {
         Intent goToResultActivity = new Intent(this, ResultActivity.class);
-        goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_ANSWER_ARRAY, gameAnswers);
+        goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_QUESTIONS_ARRAY, forResultQuestions);
+        goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_ANSWERS_ARRAY, forResultAnswers);
         goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE_TOTAL_QUESTIONS, scoreTotalQuestions);
         goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE_TOTAL_TIME, scoreTotalTime);
         goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS, numberOfQuestionsAnswered);

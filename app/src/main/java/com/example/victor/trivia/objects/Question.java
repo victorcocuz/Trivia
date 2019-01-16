@@ -7,10 +7,7 @@ import android.os.Parcelable;
  * Created by Victor on 12/4/2018.
  ******/
 public class Question implements Parcelable {
-    private int questionId;
-    private int questionType;
     private int questionCategory;
-    private int questionDifficulty;
     private String questionBody;
     private String questionCorrectAnswer;
     private String questionIncorrectAnswer01;
@@ -39,7 +36,7 @@ public class Question implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(questionId);
+        parcel.writeInt(questionCategory);
         parcel.writeString(questionBody);
         parcel.writeString(questionCorrectAnswer);
         parcel.writeString(questionIncorrectAnswer01);

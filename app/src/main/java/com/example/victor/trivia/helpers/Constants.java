@@ -13,14 +13,14 @@ public class Constants {
     public static final String INTENT_TO_GAME_RETURN_KEY = "result";
 
     //Intents
-    public static final String INTENT_ACTIVITY_RESULT_ANSWER_ARRAY = "activityResultAnswerArray";
-    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_QUESTIONS = "activityResultScoreTotalQuestions";
-    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_TIME = "activityResultScoreTotalTime";
-    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS = "activityResultNumberQuestions";
-    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS_CORRECT = "activityResultNumberQuestionsCorrect";
+    public static final String INTENT_ACTIVITY_RESULT_QUESTIONS_ARRAY = "intentActivityResultAnswersArray";
+    public static final String INTENT_ACTIVITY_RESULT_ANSWERS_ARRAY = "intentActivityResultQuestionsArray";
+    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_QUESTIONS = "intentActivityResultScoreTotalQuestions";
+    public static final String INTENT_ACTIVITY_RESULT_SCORE_TOTAL_TIME = "intentActivityResultScoreTotalTime";
+    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS = "intentActivityResultNumberQuestions";
+    public static final String INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS_CORRECT = "intentActivityResultNumberQuestionsCorrect";
 
     //Database tables
-    // TODO: 1/13/2019 delete this
     public static final String DATABASE_TABLE_QUESTIONS = "questions";
 
     //Question Categories

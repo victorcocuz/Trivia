@@ -39,10 +39,9 @@
     <string name="category_social_sciences">Social Sciences</string>
     <string name="category_sport">Sport</string>
 
-    <string name="category_none_description">Please select a category to continue</string>
-    <string name="question_incomplete_description">Please complete all question fields</string>
-
     <!--Toast Messages-->
+    <string name="toast_category_none_description">Please select a category to continue</string>
+    <string name="toast_question_incomplete_description">Please complete all question fields</string>
     <string name="toast_no_more_questions">Congratulations! You answered correctly all questions in this demo version. Good to know. You can always check out your answers in the user section… Or you can reset and start again :)</string>
 </resources>
 
