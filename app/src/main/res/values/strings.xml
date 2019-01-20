@@ -14,7 +14,7 @@
 
     <!--Fragments-->
     <string name="fragment_play">Play</string>
-    <string name="fragment_user">User</string>
+    <string name="fragment_statistics">Statistics</string>
     <string name="fragment_rankings">Rankings</string>
     <string name="fragment_add_questions">Add Questions</string>
 

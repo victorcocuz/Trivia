@@ -351,6 +351,7 @@ public class GameActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        countDownTimer.cancel();
         finish();
     }
 }

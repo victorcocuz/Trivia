@@ -51,12 +51,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         String answeredAnswer = answer.getAnswerAnswer();
         String correctAnswer = correctAnswers.get(position);
 
-        //Set all answer backgrounds
-//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-
         String[] answerOptions = new String[]{
                 question.getQuestionCorrectAnswer(),
                 question.getQuestionIncorrectAnswer01(),

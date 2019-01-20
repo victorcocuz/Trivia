@@ -10,7 +10,7 @@ import com.example.victor.trivia.R;
 import com.example.victor.trivia.fragments.AddQuestionFragment;
 import com.example.victor.trivia.fragments.PlayFragment;
 import com.example.victor.trivia.fragments.RankingsFragment;
-import com.example.victor.trivia.fragments.UserFragment;
+import com.example.victor.trivia.fragments.StatisticsFragment;
 
 /******
  * Created by Victor on 11/21/2018.
@@ -33,7 +33,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
                 PlayFragment.setPlayFragmentUserId(userId);
                 return new PlayFragment();
             case 1:
-                return new UserFragment();
+                return new StatisticsFragment();
             case 2:
                 return new RankingsFragment();
             case 3:
@@ -47,7 +47,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0: return context.getString(R.string.fragment_play);
-            case 1: return context.getString(R.string.fragment_user);
+            case 1: return context.getString(R.string.fragment_statistics);
             case 2: return context.getString(R.string.fragment_rankings);
             case 3: return context.getString(R.string.fragment_add_questions);
         }
