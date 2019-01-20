@@ -16,16 +16,14 @@ import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.objects.Question;
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.databinding.FragmentAddQuestionBinding;
-import com.example.victor.trivia.helpers.Constants;
+import com.example.victor.trivia.utilities.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddQuestionFragment extends Fragment {
-    private static final String LOG_TAG = AddQuestionFragment.class.getSimpleName();
 
     //Firebase
     private FirebaseDatabase firebaseDatabase;
@@ -134,6 +132,7 @@ public class AddQuestionFragment extends Fragment {
                     questionDescription = binding.addQuestionDescriptionEditText.getText().toString();
                     questionPhotoUrl = binding.addQuestionPhotoUrlEditText.getText().toString();
 
+                    //Submit question to Firebase
                     Question question = new Question(questionCategory,
                             questionBody,
                             questionAnswerCorrect,
@@ -143,12 +142,20 @@ public class AddQuestionFragment extends Fragment {
                             questionDescription,
                             questionPhotoUrl);
                     questionsDatabaseReference.push().setValue(question);
-                    Toast.makeText(getContext(), "Question was submitted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_question_submitted), Toast.LENGTH_SHORT).show();
+
+                    //Empty query fields
+                    binding.addQuestionBodyEditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionAnswerCorrectEditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionAnswerIncorrect01EditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionAnswerIncorrect02EditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionAnswerIncorrect03EditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionDescriptionEditText.setText(Constants.CONSTANT_NULL);
+                    binding.addQuestionPhotoUrlEditText.setText(Constants.CONSTANT_NULL);
                 }
             }
         });
 
         return rootView;
     }
-
 }

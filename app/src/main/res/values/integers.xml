@@ -6,4 +6,17 @@
     <integer name="score_timer_tick_interval">1000</integer>
     <integer name="score_timer_division_rate">5</integer>
     <integer name="score_per_question">10</integer>
-</resources>
+
+
+    <integer name="score_limit_level_1">0</integer>
+    <integer name="score_limit_level_2">100</integer>
+    <integer name="score_limit_level_3">250</integer>
+    <integer name="score_limit_level_4">500</integer>
+    <integer name="score_limit_level_5">800</integer>
+    <integer name="score_limit_level_6">1200</integer>
+    <integer name="score_limit_level_7">1700</integer>
+    <integer name="score_limit_level_8">2300</integer>
+    <integer name="score_limit_level_9">3000</integer>
+    <integer name="score_limit_level_10">4100</integer>
+    <integer name="score_limit_level_11">5300</integer>
+    </resources>

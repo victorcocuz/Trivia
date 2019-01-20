@@ -8,17 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.activities.GameActivity;
 
 //Helpers
-import com.example.victor.trivia.helpers.Constants;
+import com.example.victor.trivia.utilities.Constants;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PlayFragment extends Fragment {
+    private static String userId;
     TextView startPlayView;
 
     public PlayFragment() {
@@ -28,30 +32,22 @@ public class PlayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
+        //Main
         final View rootView = inflater.inflate(R.layout.fragment_play, container, false);
         startPlayView = rootView.findViewById(R.id.fragment_play_button);
 
         startPlayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startGameForIntent = new Intent(rootView.getContext(), GameActivity.class);
-                startActivityForResult(startGameForIntent, Constants.INTENT_TO_GAME_REQUEST_CODE);
-//                startActivity(startGameForIntent);
+                Intent startGameIntent = new Intent(rootView.getContext(), GameActivity.class);
+                startGameIntent.putExtra(Constants.INTENT_ACTIVITY_GAME_USER_ID, userId);
+                startActivity(startGameIntent);
             }
         });
         return rootView;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.INTENT_TO_GAME_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra(Constants.INTENT_TO_GAME_RETURN_KEY);
-                startPlayView.setText(result);
-            }
-        }
+    public static void setPlayFragmentUserId(String userId){
+        PlayFragment.userId = userId;
     }
 }

@@ -18,16 +18,19 @@ import com.example.victor.trivia.fragments.UserFragment;
 public class FragmentAdapter extends FragmentPagerAdapter {
 
     private Context context;
+    private String userId;
 
-    public FragmentAdapter(Context context, FragmentManager fm) {
+    public FragmentAdapter(Context context, FragmentManager fm, String userId) {
         super(fm);
         this.context = context;
+        this.userId = userId;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                PlayFragment.setPlayFragmentUserId(userId);
                 return new PlayFragment();
             case 1:
                 return new UserFragment();

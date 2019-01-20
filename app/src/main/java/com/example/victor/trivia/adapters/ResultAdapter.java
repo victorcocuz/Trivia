@@ -4,15 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.victor.trivia.R;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
 
 import com.example.victor.trivia.databinding.CardResultAnswersBinding;
 
 import java.util.List;
+import java.util.Set;
 
 /******
  * Created by Victor on 1/14/2019.
@@ -22,11 +23,17 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     private Context context;
     private List<Question> questions;
     private List<Answer> answers;
+    private List<String> correctAnswers;
 
-    public ResultAdapter(Context context, List<Question> questions, List<Answer> answers) {
+    public ResultAdapter(Context context) {
         this.context = context;
+    }
+
+    public void updateResults(List<Question> questions, List<Answer> answers, List<String> correctAnswers) {
         this.questions = questions;
         this.answers = answers;
+        this.correctAnswers = correctAnswers;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -38,17 +45,50 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ResultAdapter.ResultViewHolder resultViewHolder, int i) {
-        Question question = questions.get(i);
-        Answer answer = answers.get(i);
+    public void onBindViewHolder(@NonNull ResultAdapter.ResultViewHolder resultViewHolder, int position) {
+        Question question = questions.get(position);
+        Answer answer = answers.get(position);
         String answeredAnswer = answer.getAnswerAnswer();
-        String[] answers = new String[]{
+        String correctAnswer = correctAnswers.get(position);
+
+        //Set all answer backgrounds
+//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+//        resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+
+        String[] answerOptions = new String[]{
                 question.getQuestionCorrectAnswer(),
                 question.getQuestionIncorrectAnswer01(),
                 question.getQuestionIncorrectAnswer02(),
                 question.getQuestionIncorrectAnswer03()
         };
 
+        //Set answer backgrounds for incorrect answer
+        if(!answeredAnswer.equals(correctAnswer)){
+            if (answeredAnswer.equals(answerOptions[0])) {
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+            } else if (answeredAnswer.equals(answerOptions[1])) {
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+            } else if (answeredAnswer.equals(answerOptions[2])) {
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+            } else if (answeredAnswer.equals(answerOptions[3])) {
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+            }
+        }
+
+        //Set answer backgrounds for correct answer
+        if (correctAnswer.equals(answerOptions[0])) {
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+        } else if (correctAnswer.equals(answerOptions[1])) {
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+        } else if (correctAnswer.equals(answerOptions[2])) {
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+        } else if (correctAnswer.equals(answerOptions[3])) {
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+        }
+
+        //Set answer texts
         resultViewHolder.cardResultAnswersBinding.cardResultTvAnswerTime.setText(answer.getAnswerTime());
         resultViewHolder.cardResultAnswersBinding.cardResultTvQuestionBody.setText(question.getQuestionBody());
         resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setText(question.getQuestionCorrectAnswer());
@@ -57,18 +97,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setText(question.getQuestionIncorrectAnswer03());
         resultViewHolder.cardResultAnswersBinding.cardResultTvAnswerDescription.setText(question.getQuestionDescription());
         resultViewHolder.cardResultAnswersBinding.cardResultTvAnswerPhoto.setText(question.getQuestionPhotoUrl());
-
     }
 
     @Override
     public int getItemCount() {
         return questions.size();
-    }
-
-    public void updateResult(List<Question> questions, List<Answer> answers){
-        this.questions = questions;
-        this.answers = answers;
-        notifyDataSetChanged();
     }
 
     public class ResultViewHolder extends RecyclerView.ViewHolder {

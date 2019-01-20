@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 //Contract imports
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
+import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 
 /******
  * Created by Victor on 1/8/2019.
@@ -35,16 +35,17 @@ public class TriviaDbHelper extends SQLiteOpenHelper {
                 + QuestionsEntry.QUESTIONS_PHOTO_URL + " TEXT);";
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_QUESTIONS);
 
-        final String SQL_CREATE_TABLE_QUESTIONS_ANSWERED = "CREATE TABLE " + AnsweredEntry.ANSWERED_TABLE_NAME + " ("
-                + AnsweredEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + AnsweredEntry.ANSWERED_FIREBASE_ID + " TEXT UNIQUE, "
-                + AnsweredEntry.ANSWERED_FIREBASE_USER_ID + " TEXT, "
-                + AnsweredEntry.ANSWERED_FIREBASE_QUESTION_ID + " TEXT, "
-                + AnsweredEntry.ANSWERED_STATUS + " TEXT, "
-                + AnsweredEntry.ANSWERED_ANSWER + " TEXT, "
-                + AnsweredEntry.ANSWERED_SCORE_QUESTION + " INTEGER, "
-                + AnsweredEntry.ANSWERED_SCORE_TIME + " INTEGER, "
-                + AnsweredEntry.ANSWERED_TIME + " TEXT);";
+        final String SQL_CREATE_TABLE_QUESTIONS_ANSWERED = "CREATE TABLE " + AnswersEntry.ANSWERS_TABLE_NAME + " ("
+                + AnswersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + AnswersEntry.ANSWERS_FIREBASE_ID + " TEXT UNIQUE, "
+                + AnswersEntry.ANSWERS_FIREBASE_USER_ID + " TEXT, "
+                + AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID + " TEXT, "
+                + AnswersEntry.ANSWERS_STATUS + " TEXT, "
+                + AnswersEntry.ANSWERS_ANSWER + " TEXT, "
+                + AnswersEntry.ANSWERS_SCORE_QUESTION + " INTEGER, "
+                + AnswersEntry.ANSWERS_SCORE_TIME + " INTEGER, "
+                + AnswersEntry.ANSWERS_TIME + " TEXT, "
+                + AnswersEntry.ANSWERS_CATEGORY + " INTEGER);";
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_QUESTIONS_ANSWERED);
     }
 

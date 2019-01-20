@@ -11,4 +11,18 @@
         <item>@string/category_social_sciences</item>
         <item>@string/category_sport</item>
     </string-array>
+
+    <string-array name="array_levels">
+        <item>@integer/score_limit_level_1</item>
+        <item>@integer/score_limit_level_2</item>
+        <item>@integer/score_limit_level_3</item>
+        <item>@integer/score_limit_level_4</item>
+        <item>@integer/score_limit_level_5</item>
+        <item>@integer/score_limit_level_6</item>
+        <item>@integer/score_limit_level_7</item>
+        <item>@integer/score_limit_level_8</item>
+        <item>@integer/score_limit_level_9</item>
+        <item>@integer/score_limit_level_10</item>
+        <item>@integer/score_limit_level_11</item>
+    </string-array>
 </resources>

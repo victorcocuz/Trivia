@@ -14,25 +14,15 @@ public class TriviaContract {
 
     public static final String TRIVIA_PATH_USERS = "users";
     public static final String TRIVIA_PATH_QUESTIONS = "questions";
-    public static final String TRIVIA_PATH_GAMES = "games";
+    public static final String TRIVIA_PATH_SCORE = "games";
     public static final String TRIVIA_PATH_ANSWERS = "answers";
 
-    public static final String USERS_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_USERS;
-    public static final String USERS_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_USERS;
     public static final String QUESTIONS_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_QUESTIONS;
     public static final String QUESTIONS_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_QUESTIONS;
-    public static final String GAMES_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_GAMES;
-    public static final String GAMES_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_GAMES;
-    public static final String ANSWERED_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_ANSWERS;
-    public static final String ANSWERED_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_ANSWERS;
-
-    public static final class UsersEntry implements BaseColumns {
-        public static final Uri USERS_URI = TRIVIA_BASE_URI.buildUpon()
-                .appendPath(TRIVIA_PATH_USERS)
-                .build();
-
-        public static final String USERS_TABLE_NAME = "usersTable";
-    }
+    public static final String ANSWERS_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_ANSWERS;
+    public static final String ANSWERS_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_ANSWERS;
+    public static final String SCORE_CONTENT_DIR_BASE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_SCORE;
+    public static final String SCORE_CONTENT_ITEM_BASE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + TRIVIA_AUTHORITY + "/" + TRIVIA_PATH_SCORE;
 
     public static final class QuestionsEntry implements BaseColumns {
         public static final Uri QUESTIONS_URI = TRIVIA_BASE_URI.buildUpon()
@@ -52,27 +42,33 @@ public class TriviaContract {
         public static final String QUESTIONS_PHOTO_URL = "questionsPhotoUrl";
     }
 
-    public static final class GamesEntry implements BaseColumns {
-        public static final Uri GAMES_URI = TRIVIA_BASE_URI.buildUpon()
-                .appendPath(TRIVIA_PATH_GAMES)
-                .build();
-
-        public static final String GAMES_TABLE_NAME = "questions";
-    }
-
-    public static final class AnsweredEntry implements BaseColumns {
-        public static final Uri ANSWERED_URI = TRIVIA_BASE_URI.buildUpon()
+    public static final class AnswersEntry implements BaseColumns {
+        public static final Uri ANSWERS_URI = TRIVIA_BASE_URI.buildUpon()
                 .appendEncodedPath(TRIVIA_PATH_ANSWERS)
                 .build();
 
-        public static final String ANSWERED_TABLE_NAME = "answeredTable";
-        public static final String ANSWERED_FIREBASE_ID = "answeredFirebaseId";
-        public static final String ANSWERED_FIREBASE_USER_ID = "answeredFirebaseUserId";
-        public static final String ANSWERED_FIREBASE_QUESTION_ID = "answeredFirebaseQuestionId";
-        public static final String ANSWERED_STATUS = "answeredStatus";
-        public static final String ANSWERED_ANSWER = "answeredAnswer";
-        public static final String ANSWERED_SCORE_QUESTION = "answeredScoreQuestion";
-        public static final String ANSWERED_SCORE_TIME = "answeredScoreTime";
-        public static final String ANSWERED_TIME = "answeredTime";
+        public static final String ANSWERS_TABLE_NAME = "answersTable";
+        public static final String ANSWERS_FIREBASE_ID = "answersFirebaseId";
+        public static final String ANSWERS_FIREBASE_USER_ID = "answersFirebaseUserId";
+        public static final String ANSWERS_FIREBASE_QUESTION_ID = "answersFirebaseQuestionId";
+        public static final String ANSWERS_STATUS = "answersStatus";
+        public static final String ANSWERS_ANSWER = "answersAnswer";
+        public static final String ANSWERS_SCORE_QUESTION = "answersScoreQuestion";
+        public static final String ANSWERS_SCORE_TIME = "answersScoreTime";
+        public static final String ANSWERS_TIME = "answersTime";
+        public static final String ANSWERS_CATEGORY = "answersCategory";
+    }
+
+    public static final class GamesEntry implements BaseColumns {
+        public static final Uri SCORE_URI = TRIVIA_BASE_URI.buildUpon()
+                .appendPath(TRIVIA_PATH_SCORE)
+                .build();
+
+        public static final String SCORE_TABLE_NAME = "score";
+        public static final String SCORE_QUESTION_POINTS = "scoreQuestionPoints";
+        public static final String SCORE_TIME_POINTS = "scoreTimePoints";
+        public static final String SCORE_TOTAL_POINTS = "scoreTotalPoints";
+        public static final String SCORE_USER_LEVEL = "scoreUserLevel";
+        public static final String SCORE_NUMBER_OF_QUESTIONS_ANSWERED = "scoreNumberOfQuestionsAnswered";
     }
 }

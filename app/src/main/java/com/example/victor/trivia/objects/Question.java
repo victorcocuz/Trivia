@@ -59,6 +59,7 @@ public class Question implements Parcelable {
     }
 
     public Question() {
+        //Empty Constructor
     }
 
     public Question(int questionCategory, String questionBody, String questionCorrectAnswer, String questionIncorrectAnswer01, String questionIncorrectAnswer02, String questionIncorrectAnswer03, String questionAnswerDescription, String questionPhotoUrl) {

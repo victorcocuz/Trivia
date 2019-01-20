@@ -13,6 +13,7 @@ public class Answer implements Parcelable {
     private int answerScoreQuestion;
     private int answerScoreTime;
     private String answerTime;
+    private int answerCategory;
 
     //Parcelable Implementation
     public static final Creator<Answer> CREATOR = new Creator<Answer>() {
@@ -40,6 +41,7 @@ public class Answer implements Parcelable {
         parcel.writeInt(answerScoreQuestion);
         parcel.writeInt(answerScoreTime);
         parcel.writeString(answerTime);
+        parcel.writeInt(answerCategory);
     }
 
     //Constructors
@@ -50,17 +52,19 @@ public class Answer implements Parcelable {
         answerScoreQuestion = in.readInt();
         answerScoreTime = in.readInt();
         answerTime = in.readString();
+        answerCategory = in.readInt();
     }
 
     public Answer() {}
 
-    public Answer(String answerFirebaseQuestionId, int answerStatus, String answerAnswer, int answerScoreQuestion, int answeredScoreTime, String answerTime) {
+    public Answer(String answerFirebaseQuestionId, int answerStatus, String answerAnswer, int answerScoreQuestion, int answerScoreTime, String answerTime, int answerCategory) {
         this.answerFirebaseQuestionId = answerFirebaseQuestionId;
         this.answerStatus = answerStatus;
         this.answerAnswer = answerAnswer;
         this.answerScoreQuestion = answerScoreQuestion;
-        this.answerScoreTime = answeredScoreTime;
+        this.answerScoreTime = answerScoreTime;
         this.answerTime = answerTime;
+        this.answerCategory = answerCategory;
     }
 
     //Getters
@@ -70,4 +74,5 @@ public class Answer implements Parcelable {
     public int getAnswerScoreQuestion() {return answerScoreQuestion;}
     public int getAnswerScoreTime() {return answerScoreTime;}
     public String getAnswerTime() {return answerTime;}
+    public int getAnswerCategory() {return answerCategory;}
 }

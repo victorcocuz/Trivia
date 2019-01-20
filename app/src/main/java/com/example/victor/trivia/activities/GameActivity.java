@@ -1,6 +1,5 @@
 package com.example.victor.trivia.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -14,9 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.victor.trivia.R;
@@ -25,9 +23,10 @@ import com.example.victor.trivia.adapters.AnswersAdapter;
 import com.example.victor.trivia.databinding.ActivityGameBinding;
 
 //Helpers
-import com.example.victor.trivia.helpers.Constants;
+import com.example.victor.trivia.objects.Score;
+import com.example.victor.trivia.utilities.Constants;
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
+import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
 
@@ -35,7 +34,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import timber.log.Timber;
 
@@ -43,7 +41,9 @@ public class GameActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks,
         AnswersAdapter.AnswersAdapterOnClickHandler {
 
+    //Main
     public ActivityGameBinding binding;
+    private Bundle mSavedInstanceState;
 
     //Loaders
     private static final int LOADER_ID_CURSOR_ANSWERED = 1;
@@ -66,16 +66,21 @@ public class GameActivity extends AppCompatActivity implements
     long timeLeft;
     int scoreQuestion, scoreTime, scoreTotalQuestions, scoreTotalTime;
     int numberOfQuestionsRemaining, numberOfQuestionsAnswered, numberOfQuestionsAnsweredCorrect;
-    float answerTime;
+    float answerTime, totalAnswerTime;
 
     //Extras for result
     ArrayList<Answer> forResultAnswers = new ArrayList<>();
     ArrayList<Question> forResultQuestions = new ArrayList<>();
+    ArrayList<String> forResultCorrectAnswers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Main
         binding = DataBindingUtil.setContentView(this, R.layout.activity_game);
+        mSavedInstanceState = savedInstanceState;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Reset score
         // TODO: 1/14/2019 change to 10
@@ -88,6 +93,8 @@ public class GameActivity extends AppCompatActivity implements
         scoreTotalTime = 0;
 
         //Set up recycler view
+        binding.activityGameRv.setVisibility(View.INVISIBLE);
+        binding.activityGameTvQuestion.setVisibility(View.INVISIBLE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.activityGameRv.setLayoutManager(layoutManager);
         binding.activityGameRv.setHasFixedSize(true);
@@ -95,19 +102,12 @@ public class GameActivity extends AppCompatActivity implements
         answersAdapter = new AnswersAdapter(this, this);
         binding.activityGameRv.setAdapter(answersAdapter);
 
-        TextView finishView = findViewById(R.id.activity_game_tv_finish);
-        finishView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(Constants.INTENT_TO_GAME_RETURN_KEY, "muie");
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
-
         //Call answers loader
-        getSupportLoaderManager().initLoader(LOADER_ID_CURSOR_ANSWERED, null, GameActivity.this).forceLoad();
+        if (mSavedInstanceState != null) {
+            getSupportLoaderManager().restartLoader(LOADER_ID_CURSOR_ANSWERED, null, GameActivity.this).forceLoad();
+        } else {
+            getSupportLoaderManager().initLoader(LOADER_ID_CURSOR_ANSWERED, null, GameActivity.this).forceLoad();
+        }
     }
 
     @NonNull
@@ -115,10 +115,10 @@ public class GameActivity extends AppCompatActivity implements
     public Loader onCreateLoader(int id, @Nullable Bundle bundle) {
         switch (id) {
             case LOADER_ID_CURSOR_ANSWERED:
-                String answeredSelection = AnsweredEntry.ANSWERED_STATUS + "=?";
+                String answeredSelection = AnswersEntry.ANSWERS_STATUS + "=?";
                 String[] answeredSelectionArgs = {String.valueOf(Constants.ANSWER_STATUS_CORRECT)};
                 return new CursorLoader(this,
-                        AnsweredEntry.ANSWERED_URI,
+                        AnswersEntry.ANSWERS_URI,
                         Constants.PROJECTION_ANSWERS,
                         answeredSelection,
                         answeredSelectionArgs,
@@ -145,7 +145,7 @@ public class GameActivity extends AppCompatActivity implements
                 if (cursorAnswered != null) {
                     if (cursorAnswered.getCount() > 0) {
 
-                        //Find all questions answered filtering by FirebaseId. These will be later passed as selection arguments.
+                        //Find all questions answered filtering by FirebaseId. These will be later passed as selection arguments in the questions curosr
                         questionsSelectionArgs = new String[cursorAnswered.getCount()];
                         questionSelectionBuilder.append(QuestionsEntry.QUESTIONS_FIREBASE_ID + " NOT IN (");
                         for (int i = 0; i < cursorAnswered.getCount(); i++) {
@@ -155,7 +155,7 @@ public class GameActivity extends AppCompatActivity implements
                                 questionSelectionBuilder.append("?)");
                             }
                             cursorAnswered.moveToPosition(i);
-                            questionsSelectionArgs[i] = cursorAnswered.getString(cursorAnswered.getColumnIndex(AnsweredEntry.ANSWERED_FIREBASE_QUESTION_ID));
+                            questionsSelectionArgs[i] = cursorAnswered.getString(cursorAnswered.getColumnIndex(AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID));
                         }
 
                         questionsSelection = questionSelectionBuilder.toString();
@@ -167,9 +167,13 @@ public class GameActivity extends AppCompatActivity implements
                     }
 
                     //Call questions loader
-                    getSupportLoaderManager().initLoader(LOADER_ID_CURSOR_QUESTIONS, null, GameActivity.this).forceLoad();
+                    if (mSavedInstanceState != null) {
+                        getSupportLoaderManager().restartLoader(LOADER_ID_CURSOR_QUESTIONS, null, GameActivity.this).forceLoad();
+                    } else {
+                        getSupportLoaderManager().initLoader(LOADER_ID_CURSOR_QUESTIONS, null, GameActivity.this).forceLoad();
+                    }
 
-                    cursorAnswered.close();
+                    getSupportLoaderManager().destroyLoader(LOADER_ID_CURSOR_ANSWERED);
                 } else {
                     Timber.e("Cursor NotAnswered is null");
                 }
@@ -194,9 +198,11 @@ public class GameActivity extends AppCompatActivity implements
 
                         //Load Question
                         loadNextQuestion(cursorQuestions);
+
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.toast_no_more_questions), Toast.LENGTH_SHORT).show();
                     }
+
                 } else {
                     Timber.e("Could not receive cursorQuestions to load question");
                 }
@@ -208,7 +214,12 @@ public class GameActivity extends AppCompatActivity implements
 
     @Override
     public void onLoaderReset(@NonNull Loader loader) {
-        getLoaderManager().destroyLoader(LOADER_ID_CURSOR_QUESTIONS);
+        if (getSupportLoaderManager().getLoader(LOADER_ID_CURSOR_ANSWERED) != null) {
+            getSupportLoaderManager().destroyLoader(LOADER_ID_CURSOR_ANSWERED);
+        }
+        if (getSupportLoaderManager().getLoader(LOADER_ID_CURSOR_QUESTIONS) != null) {
+            getSupportLoaderManager().destroyLoader(LOADER_ID_CURSOR_QUESTIONS);
+        }
     }
 
     @Override
@@ -221,6 +232,7 @@ public class GameActivity extends AppCompatActivity implements
         scoreQuestion = 0;
         scoreTime = 0;
         answerTime = (getResources().getInteger(R.integer.score_timer_question_interval) - timeLeft) / (float) getResources().getInteger(R.integer.score_timer_tick_interval);
+        totalAnswerTime = answerTime + totalAnswerTime;
         NumberFormat formatter = NumberFormat.getNumberInstance();
         formatter.setMinimumFractionDigits(2);
         formatter.setMaximumFractionDigits(2);
@@ -255,7 +267,8 @@ public class GameActivity extends AppCompatActivity implements
                 chosenAnswer,
                 scoreQuestion,
                 scoreTime,
-                formattedAnswerTime);
+                formattedAnswerTime,
+                cursorQuestions.getInt(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_CATEGORY)));
         forResultAnswers.add(forResultAnswer);
 
         //If the quiz is not over, load next question. If the quiz is over go to result activity
@@ -281,6 +294,7 @@ public class GameActivity extends AppCompatActivity implements
 
         //Shuffle answer options
         binding.activityGameTvQuestion.setText(questionBody);
+        forResultCorrectAnswers.add(questionCorrectAnswer);
         answers = new ArrayList<>();
         answers.add(questionCorrectAnswer);
         answers.add(questionIncorrectAnswer1);
@@ -288,6 +302,13 @@ public class GameActivity extends AppCompatActivity implements
         answers.add(questionIncorrectAnswer3);
         Collections.shuffle(answers);
         answersAdapter.updateAnswers(answers);
+
+        if (binding.activityGameRv.getVisibility() == View.INVISIBLE) {
+            binding.activityGameRv.setVisibility(View.VISIBLE);
+        }
+        if (binding.activityGameTvQuestion.getVisibility() == View.INVISIBLE) {
+            binding.activityGameTvQuestion.setVisibility(View.VISIBLE);
+        }
 
         //Setup Timer
         countDownTimer = new CountDownTimer(getResources().getInteger(R.integer.score_timer_question_interval), getResources().getInteger(R.integer.score_timer_tick_interval)) {
@@ -308,13 +329,28 @@ public class GameActivity extends AppCompatActivity implements
     }
 
     private void StartResultActivity() {
+        Score forResultscore = new Score(
+                scoreTotalQuestions,
+                scoreTotalTime,
+                0,
+                numberOfQuestionsAnswered,
+                numberOfQuestionsAnsweredCorrect,
+                (float) numberOfQuestionsAnsweredCorrect / (float) numberOfQuestionsAnswered,
+                totalAnswerTime / (float) numberOfQuestionsAnswered);
+
         Intent goToResultActivity = new Intent(this, ResultActivity.class);
         goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_QUESTIONS_ARRAY, forResultQuestions);
         goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_ANSWERS_ARRAY, forResultAnswers);
-        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE_TOTAL_QUESTIONS, scoreTotalQuestions);
-        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE_TOTAL_TIME, scoreTotalTime);
-        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS, numberOfQuestionsAnswered);
-        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_NUMBER_QUESTIONS_CORRECT, numberOfQuestionsAnsweredCorrect);
+        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE, forResultscore);
+        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_CORRECT_ANSWERS, forResultCorrectAnswers);
         startActivity(goToResultActivity);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

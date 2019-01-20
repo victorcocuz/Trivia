@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
 //Contract imports
 import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.GamesEntry;
-import com.example.victor.trivia.data.TriviaContract.AnsweredEntry;
+import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 
 import timber.log.Timber;
 
@@ -23,8 +23,6 @@ import timber.log.Timber;
  ******/
 public class TriviaProvider extends ContentProvider {
 
-    private static final int CODE_USERS = 100;
-    private static final int CODE_USERS_ITEM = 101;
     private static final int CODE_QUESTIONS = 200;
     private static final int CODE_QUESTIONS_ITEM = 201;
     private static final int CODE_GAMES = 300;
@@ -36,12 +34,10 @@ public class TriviaProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_USERS, CODE_USERS);
-        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_USERS + "#", CODE_USERS_ITEM);
         uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_QUESTIONS, CODE_QUESTIONS);
         uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_QUESTIONS + "#", CODE_QUESTIONS_ITEM);
-        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_GAMES, CODE_GAMES);
-        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_GAMES + "#", CODE_GAMES_ITEM);
+        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_SCORE, CODE_GAMES);
+        uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_SCORE + "#", CODE_GAMES_ITEM);
         uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_ANSWERS, CODE_ANSWERS);
         uriMatcher.addURI(TriviaContract.TRIVIA_AUTHORITY, TriviaContract.TRIVIA_PATH_ANSWERS + "#", CODE_ANSWERS_ITEM);
         return uriMatcher;
@@ -61,26 +57,6 @@ public class TriviaProvider extends ContentProvider {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         switch (uriMatcher.match(uri)) {
-            case CODE_USERS:
-//                cursor = database.query(RecipesEntry.RECIPES_TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder);
-                break;
-            case CODE_USERS_ITEM:
-//                selection = RecipesEntry._ID + "=?";
-//                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-//                cursor = database.query(RecipesEntry.RECIPES_TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder);
-                break;
             case CODE_QUESTIONS:
                 cursor = database.query(QuestionsEntry.QUESTIONS_TABLE_NAME,
                         projection,
@@ -102,7 +78,7 @@ public class TriviaProvider extends ContentProvider {
                         sortOrder);
                 break;
             case CODE_GAMES:
-                cursor = database.query(GamesEntry.GAMES_TABLE_NAME,
+                cursor = database.query(GamesEntry.SCORE_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -113,7 +89,7 @@ public class TriviaProvider extends ContentProvider {
             case CODE_GAMES_ITEM:
                 selection = GamesEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = database.query(GamesEntry.GAMES_TABLE_NAME,
+                cursor = database.query(GamesEntry.SCORE_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -122,7 +98,7 @@ public class TriviaProvider extends ContentProvider {
                         sortOrder);
                 break;
             case CODE_ANSWERS:
-                cursor = database.query(AnsweredEntry.ANSWERED_TABLE_NAME,
+                cursor = database.query(AnswersEntry.ANSWERS_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -133,7 +109,7 @@ public class TriviaProvider extends ContentProvider {
             case CODE_ANSWERS_ITEM:
                 selection = QuestionsEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = database.query(AnsweredEntry.ANSWERED_TABLE_NAME,
+                cursor = database.query(AnswersEntry.ANSWERS_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -163,14 +139,6 @@ public class TriviaProvider extends ContentProvider {
         }
 
         switch (uriMatcher.match(uri)) {
-            case CODE_USERS:
-//                id = database.insert(RecipesEntry.RECIPES_TABLE_NAME,
-//                        null,
-//                        values);
-//                if (id == -1) {
-//                    Log.e(LOG_TAG, "Failed to insert row for " + uri);
-//                }
-                break;
             case CODE_QUESTIONS:
                 id = database.insert(QuestionsEntry.QUESTIONS_TABLE_NAME,
                         null,
@@ -180,7 +148,7 @@ public class TriviaProvider extends ContentProvider {
                 }
                 break;
             case CODE_GAMES:
-                id = database.insert(GamesEntry.GAMES_TABLE_NAME,
+                id = database.insert(GamesEntry.SCORE_TABLE_NAME,
                         null,
                         values);
                 if (id == -1) {
@@ -188,7 +156,7 @@ public class TriviaProvider extends ContentProvider {
                 }
                 break;
             case CODE_ANSWERS:
-                id = database.insert(AnsweredEntry.ANSWERED_TABLE_NAME,
+                id = database.insert(AnswersEntry.ANSWERS_TABLE_NAME,
                         null,
                         values);
                 if (id == -1) {
@@ -209,27 +177,13 @@ public class TriviaProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        int rowsUpdated = 0;
+        int rowsUpdated;
 
         if (values == null || values.size() == 0) {
             return 0;
         }
 
         switch (uriMatcher.match(uri)) {
-            case CODE_USERS:
-//                rowsUpdated = database.update(RecipesEntry.RECIPES_TABLE_NAME,
-//                        values,
-//                        selection,
-//                        selectionArgs);
-                break;
-            case CODE_USERS_ITEM:
-//                selection = RecipesEntry._ID + "=?";
-//                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-//                rowsUpdated = database.update(RecipesEntry.RECIPES_TABLE_NAME,
-//                        values,
-//                        selection,
-//                        selectionArgs);
-                break;
             case CODE_QUESTIONS:
                 rowsUpdated = database.update(QuestionsEntry.QUESTIONS_TABLE_NAME,
                         values,
@@ -245,7 +199,7 @@ public class TriviaProvider extends ContentProvider {
                         selectionArgs);
                 break;
             case CODE_GAMES:
-                rowsUpdated = database.update(GamesEntry.GAMES_TABLE_NAME,
+                rowsUpdated = database.update(GamesEntry.SCORE_TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
@@ -253,13 +207,13 @@ public class TriviaProvider extends ContentProvider {
             case CODE_GAMES_ITEM:
                 selection = GamesEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                rowsUpdated = database.update(GamesEntry.GAMES_TABLE_NAME,
+                rowsUpdated = database.update(GamesEntry.SCORE_TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
                 break;
             case CODE_ANSWERS:
-                rowsUpdated = database.update(AnsweredEntry.ANSWERED_TABLE_NAME,
+                rowsUpdated = database.update(AnswersEntry.ANSWERS_TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
@@ -267,7 +221,7 @@ public class TriviaProvider extends ContentProvider {
             case CODE_ANSWERS_ITEM:
                 selection = QuestionsEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                rowsUpdated = database.update(AnsweredEntry.ANSWERED_TABLE_NAME,
+                rowsUpdated = database.update(AnswersEntry.ANSWERS_TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
@@ -289,18 +243,6 @@ public class TriviaProvider extends ContentProvider {
         int rowsDeleted = 0;
 
         switch (uriMatcher.match(uri)) {
-            case CODE_USERS:
-//                rowsDeleted = database.delete(RecipesEntry.RECIPES_TABLE_NAME,
-//                        selection,
-//                        selectionArgs);
-                break;
-            case CODE_USERS_ITEM:
-//                selection = RecipesEntry._ID + "=?";
-//                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-//                rowsDeleted = database.delete(RecipesEntry.RECIPES_TABLE_NAME,
-//                        selection,
-//                        selectionArgs);
-                break;
             case CODE_QUESTIONS:
                 rowsDeleted = database.delete(QuestionsEntry.QUESTIONS_TABLE_NAME,
                         selection,
@@ -314,26 +256,26 @@ public class TriviaProvider extends ContentProvider {
                         selectionArgs);
                 break;
             case CODE_GAMES:
-                rowsDeleted = database.delete(GamesEntry.GAMES_TABLE_NAME,
+                rowsDeleted = database.delete(GamesEntry.SCORE_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             case CODE_GAMES_ITEM:
                 selection = GamesEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                rowsDeleted = database.delete(GamesEntry.GAMES_TABLE_NAME,
+                rowsDeleted = database.delete(GamesEntry.SCORE_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             case CODE_ANSWERS:
-                rowsDeleted = database.delete(AnsweredEntry.ANSWERED_TABLE_NAME,
+                rowsDeleted = database.delete(AnswersEntry.ANSWERS_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             case CODE_ANSWERS_ITEM:
                 selection = QuestionsEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                rowsDeleted = database.delete(AnsweredEntry.ANSWERED_TABLE_NAME,
+                rowsDeleted = database.delete(AnswersEntry.ANSWERS_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
@@ -351,22 +293,18 @@ public class TriviaProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)) {
-            case CODE_USERS:
-                return TriviaContract.USERS_CONTENT_DIR_BASE;
-            case CODE_USERS_ITEM:
-                return TriviaContract.USERS_CONTENT_ITEM_BASE;
             case CODE_QUESTIONS:
                 return TriviaContract.QUESTIONS_CONTENT_DIR_BASE;
             case CODE_QUESTIONS_ITEM:
                 return TriviaContract.QUESTIONS_CONTENT_ITEM_BASE;
             case CODE_GAMES:
-                return TriviaContract.GAMES_CONTENT_DIR_BASE;
+                return TriviaContract.SCORE_CONTENT_DIR_BASE;
             case CODE_GAMES_ITEM:
-                return TriviaContract.GAMES_CONTENT_ITEM_BASE;
+                return TriviaContract.SCORE_CONTENT_ITEM_BASE;
             case CODE_ANSWERS:
-                return TriviaContract.ANSWERED_CONTENT_DIR_BASE;
+                return TriviaContract.ANSWERS_CONTENT_DIR_BASE;
             case CODE_ANSWERS_ITEM:
-                return TriviaContract.ANSWERED_CONTENT_ITEM_BASE;
+                return TriviaContract.ANSWERS_CONTENT_ITEM_BASE;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri + " with match " + uri);
         }

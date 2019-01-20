@@ -1,13 +1,24 @@
 <resources>
     <string name="app_name">Trivia</string>
 
+    <!--Game Categories-->
+    <string name="category_none">Select a category</string>
+    <string name="category_arts">Arts and Culture</string>
+    <string name="category_geography">Geography</string>
+    <string name="category_history">History</string>
+    <string name="category_movies">Movies</string>
+    <string name="category_music">Music</string>
+    <string name="category_science">Science</string>
+    <string name="category_social_sciences">Social Sciences</string>
+    <string name="category_sport">Sport</string>
+
     <!--Fragments-->
     <string name="fragment_play">Play</string>
     <string name="fragment_user">User</string>
     <string name="fragment_rankings">Rankings</string>
     <string name="fragment_add_questions">Add Questions</string>
 
-    <!--Questions-->
+    <!--Questions Fragment-->
     <string name="question_categories">Categories</string>
     <string name="question_body">Question</string>
     <string name="question_body_hint">Write the question here</string>
@@ -28,20 +39,17 @@
     <!--Game Activity-->
     <string name="temp_btn_finish_game">Finish Game</string>
 
-    <!--Game Categories-->
-    <string name="category_none">Select a category</string>
-    <string name="category_arts">Arts and Culture</string>
-    <string name="category_geography">Geography</string>
-    <string name="category_history">History</string>
-    <string name="category_movies">Movies</string>
-    <string name="category_music">Music</string>
-    <string name="category_science">Science</string>
-    <string name="category_social_sciences">Social Sciences</string>
-    <string name="category_sport">Sport</string>
+    <!--On Result Activity-->
+    <string name="result_activity_finish_activity">Go Back to Main Menu</string>
 
     <!--Toast Messages-->
     <string name="toast_category_none_description">Please select a category to continue</string>
     <string name="toast_question_incomplete_description">Please complete all question fields</string>
     <string name="toast_no_more_questions">Congratulations! You answered correctly all questions in this demo version. Good to know. You can always check out your answers in the user section… Or you can reset and start again :)</string>
+    <string name="toast_sign_in">You are now signed in!</string>
+    <string name="toast_sign_out">Sign Out</string>
+    <string name="toast_no_network_connection">No network connection</string>
+    <string name="toast_no_question_answered">You haven\'t answered any question</string>
+    <string name="toast_question_submitted">Thank you for submitting the question!</string>
 </resources>
 
