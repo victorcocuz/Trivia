@@ -48,6 +48,8 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
 
     // ++TODO: 1/19/2019 check for useless implementations
+    // TODO: 1/22/2019 fragment should not move on screen turn off
+    // TODO: 1/22/2019 add questions left to game
     //Main
     ActivityMainBinding binding;
     private Bundle mSavedInstanceState;
@@ -100,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 AuthUI.getInstance()
                                         .createSignInIntentBuilder()
                                         .setIsSmartLockEnabled(false)
+                                        .setTheme(R.style.LoginTheme)
+                                        .setLogo(R.drawable.ic_logo_full)
                                         .setAvailableProviders(Arrays.asList(
                                                 new AuthUI.IdpConfig.EmailBuilder().build(),
                                                 new AuthUI.IdpConfig.GoogleBuilder().build()))

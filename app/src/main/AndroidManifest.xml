@@ -17,8 +17,8 @@
             android:exported="false" />
 
         <activity
-            android:launchMode="singleTop"
             android:name=".activities.MainActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,18 @@
         <activity
             android:name=".activities.ResultActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:parentActivityName=".activities.MainActivity" />
+
+        <receiver android:name=".providers.TriviaWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/trivia_widget_provider_info" />
+        </receiver>
+        <service android:name=".services.TriviaWidgetService" />
     </application>
 
 </manifest>

@@ -9,9 +9,9 @@
     <dimen name="margin_xlarge">16dp</dimen>
     <dimen name="margin_xxlarge">24dp</dimen>
     <dimen name="margin_xxxlarge">32dp</dimen>
-
-
+    
     <!--Text-->
+    <dimen name="text_widget">10sp</dimen>
     <dimen name="text_caption">12sp</dimen>
     <dimen name="text_body">14sp</dimen>
     <dimen name="text_subheader">16sp</dimen>
@@ -20,6 +20,17 @@
     <dimen name="text_headline">24sp</dimen>
 
     <!--Containers-->
+    <dimen name="container_btn_xsmall">16dp</dimen>
+    <dimen name="container_btn_small">20dp</dimen>
+    <dimen name="container_btn_medium_small">32dp</dimen>
+    <dimen name="container_btn_medium">40dp</dimen>
+    <dimen name="container_btn_medium_large">48dp</dimen>
     <dimen name="container_btn_height">60dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 
 </resources>

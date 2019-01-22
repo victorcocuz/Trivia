@@ -13,7 +13,6 @@ import com.example.victor.trivia.objects.Question;
 import com.example.victor.trivia.databinding.CardResultAnswersBinding;
 
 import java.util.List;
-import java.util.Set;
 
 /******
  * Created by Victor on 1/14/2019.
@@ -61,25 +60,25 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         //Set answer backgrounds for incorrect answer
         if(!answeredAnswer.equals(correctAnswer)){
             if (answeredAnswer.equals(answerOptions[0])) {
-                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
             } else if (answeredAnswer.equals(answerOptions[1])) {
-                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
             } else if (answeredAnswer.equals(answerOptions[2])) {
-                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
             } else if (answeredAnswer.equals(answerOptions[3])) {
-                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorIncorrect));
+                resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
             }
         }
 
         //Set answer backgrounds for correct answer
         if (correctAnswer.equals(answerOptions[0])) {
-            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer01.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         } else if (correctAnswer.equals(answerOptions[1])) {
-            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer02.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         } else if (correctAnswer.equals(answerOptions[2])) {
-            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer03.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         } else if (correctAnswer.equals(answerOptions[3])) {
-            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorCorrect));
+            resultViewHolder.cardResultAnswersBinding.cardResultTvAnswer04.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         }
 
         //Set answer texts
