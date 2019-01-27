@@ -1,25 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.GameActivity">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/colorAccent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_game_tb"
+            style="@style/ToolbarStandard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ToolBarStyle" />
+
+        <ImageView
+            android:id="@+id/activity_game_iv_timer"
+            android:layout_width="@dimen/container_medium"
+            android:layout_height="@dimen/container_medium_large"
+            android:contentDescription="@string/content_description_activity_game_timer"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_timer"
+            app:layout_constraintBottom_toTopOf="@+id/activity_game_cv_question"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_game_tb" />
 
         <TextView
-            android:id="@+id/activity_game_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/activity_game_tv_timer"
+            style="@style/TextTitle"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:layout_constraintBottom_toBottomOf="@id/activity_game_iv_timer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/activity_game_tv_question"
-            style="@style/Buttons" />
+            android:id="@+id/activity_game_tv_questions_remaining"
+            style="@style/TextHeaderRight"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_game_iv_timer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/activity_game_iv_timer" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/activity_game_cv_question"
+            style="@style/ButtonsSmall"
+            android:layout_height="@dimen/container_xlarge"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_game_iv_timer"
+            tools:layout_editor_absoluteX="0dp">
+
+            <TextView
+                android:id="@+id/activity_game_tv_question"
+                style="@style/TextHeaderCenter"
+                android:textColor="@color/colorWhite" />
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_game_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            app:layout_constraintVertical_bias="0.35"
+            android:layout_marginLeft="@dimen/margin_xxxlarge"
+            android:layout_marginRight="@dimen/margin_xxxlarge"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+    </android.support.constraint.ConstraintLayout>
 </layout>

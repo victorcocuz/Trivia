@@ -42,7 +42,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswersV
     public void onBindViewHolder(@NonNull AnswersViewHolder answersViewHolder, int i) {
         if (answers != null) {
             if (answers.size() > 0) {
-                answersViewHolder.cardAnswersBinding.cardAnswersTvAnswer1.setText(answers.get(i));
+                answersViewHolder.cardAnswersBinding.cardAnswersTvAnswer.setText(answers.get(i));
             }
         }
 

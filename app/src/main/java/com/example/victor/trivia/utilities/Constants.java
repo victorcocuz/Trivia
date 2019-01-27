@@ -37,6 +37,7 @@ public class Constants {
     //Shared preferences fallback values
     public static final String CONSTANT_ANONYMUOS = "anonymous";
     public static final int CONSTANT_NONE = 0;
+    public static final int CONSTANT_ONE = 1;
     public static final String CONSTANT_NULL = "";
 
     //Saved instance state constants
@@ -44,6 +45,7 @@ public class Constants {
     public static final String SAVED_INSTANCE_RESULT_ANSWERS = "savedInstanceResultAnswers";
     public static final String SAVED_INSTANCE_RESULT_SCORE = "savedInstanceResultScore";
     public static final String SAVED_INSTANCE_RESULT_CORRECT_ANSWERS = "savedInstanceResultCorrectAnswers";
+    public static final String SAVED_INSTANCE_VIEW_PAGER_POSITION = "savedInstanceViewPagerPosition";
 
     //Question categories
     public static final int QUESTION_CATEGORY_NONE = -1;

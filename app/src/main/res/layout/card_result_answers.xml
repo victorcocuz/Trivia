@@ -1,57 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card_result_cv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <!--Guidelines-->
+            <android.support.constraint.Guideline
+                android:id="@+id/card_result_start_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/card_result_end_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_medium" />
+
+            <!--Intro-->
+            <View
+                android:id="@+id/card_result_empty_view_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_medium"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toTopOf="@id/card_result_v_one_line_01"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/card_result_iv_check"
+                android:layout_width="@dimen/container_small"
+                android:layout_height="@dimen/container_small"
+                android:contentDescription="@string/content_description_activity_result_check"
+                app:layout_constraintStart_toStartOf="@+id/card_result_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/card_result_empty_view_1" />
+
+            <TextView
+                android:id="@+id/card_result_question_number"
+                style="@style/TextSubHeaderCenter"
+                android:layout_marginLeft="@dimen/margin_medium"
+                app:layout_constraintBottom_toBottomOf="@id/card_result_iv_check"
+                app:layout_constraintLeft_toRightOf="@id/card_result_iv_check"
+                app:layout_constraintTop_toTopOf="@id/card_result_iv_check"
+                app:layout_constraintVertical_bias="0.72" />
 
             <TextView
                 android:id="@+id/card_result_tv_answer_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/TextSubHeaderRight"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBaseline_toBaselineOf="@id/card_result_question_number"
+                app:layout_constraintEnd_toStartOf="@+id/card_result_end_guideline" />
+
+            <View
+                android:id="@+id/card_result_v_one_line_01"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_one"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/card_result_iv_check" />
 
             <TextView
                 android:id="@+id/card_result_tv_question_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/TextHeaderCenter"
+                android:layout_width="0dp"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toStartOf="@+id/card_result_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/card_result_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/card_result_v_one_line_01" />
 
-            <TextView
-                android:id="@+id/card_result_tv_answer_01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <View
+                android:id="@+id/card_result_v_one_line_02"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_one"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/card_result_tv_question_body" />
 
-            <TextView
-                android:id="@+id/card_result_tv_answer_02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!--Answers-->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_result_rv_answer_01"
+                style="@style/CardViewResultAnswers"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/card_result_v_one_line_02">
 
-            <TextView
-                android:id="@+id/card_result_tv_answer_03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/card_result_tv_answer_01"
+                    style="@style/TextHeaderCenter"
+                    android:maxLines="1"
+                    android:textColor="@color/colorWhite" />
+            </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/card_result_tv_answer_04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_result_rv_answer_02"
+                style="@style/CardViewResultAnswers"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/card_result_rv_answer_01">
 
+                <TextView
+                    android:id="@+id/card_result_tv_answer_02"
+                    style="@style/TextHeaderCenter"
+                    android:maxLines="1"
+                    android:textColor="@color/colorWhite" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_result_rv_answer_03"
+                style="@style/CardViewResultAnswers"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/card_result_rv_answer_02">
+
+                <TextView
+                    android:id="@+id/card_result_tv_answer_03"
+                    style="@style/TextHeaderCenter"
+                    android:maxLines="1"
+                    android:textColor="@color/colorWhite" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_result_rv_answer_04"
+                style="@style/CardViewResultAnswers"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/card_result_rv_answer_03">
+
+                <TextView
+                    android:id="@+id/card_result_tv_answer_04"
+                    style="@style/TextHeaderCenter"
+                    android:maxLines="1"
+                    android:textColor="@color/colorWhite" />
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/card_result_v_one_line_03"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_one"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/card_result_rv_answer_04" />
+
+            <ImageView
+                android:id="@+id/card_result_iv_answer_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/fragment_questions_answer_photo_url"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toBottomOf="@id/card_result_v_one_line_03" />
+
+            <View
+                android:id="@+id/card_result_v_one_line_04"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_one"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/card_result_iv_answer_photo" />
+
+            <!--Description and photo-->
             <TextView
                 android:id="@+id/card_result_tv_answer_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/TextBody"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@+id/card_result_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/card_result_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/card_result_v_one_line_04" />
 
-            <TextView
-                android:id="@+id/card_result_tv_answer_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/question_answer_photo_url" />
-        </LinearLayout>
-
+            <View
+                android:id="@+id/card_result_v_one_line_05"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_one"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/card_result_tv_answer_description" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>

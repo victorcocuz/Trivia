@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,9 +60,18 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Initialize main components
         binding = DataBindingUtil.setContentView(this, R.layout.activity_result);
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, MODE_PRIVATE);
         userId = sharedPreferences.getString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMUOS);
+        setSupportActionBar(binding.activityResultTb);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setIcon(getDrawable(R.drawable.ic_logo_small));
+            }
+        }
+        setTitle(R.string.activty_results);
 
         //Get Intent
         Intent intent = getIntent();
@@ -88,8 +99,8 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                 Timber.e("Could not receive information from intent");
             }
 
+            //Update score using a method from utilities and update result to Firebase when score is not null and when the number of answers is greater than 0
             if (score != null) {
-                //Update score using a method from utilities and update result to Firebase
                 Score updatedScore = TriviaUtilities.updateScore(this,
                         score.getUserQuestionPoints(),
                         score.getUserTimePoints(),
@@ -97,21 +108,22 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                         score.getUserNumberOfQuestionsAnsweredCorrect(),
                         score.getUserAverageAnswerTime());
 
-                firebaseDatabase = FirebaseDatabase.getInstance();
-                scoreDatabaseReference = firebaseDatabase.getReference().child(userId).child(Constants.PATH_FIREBASE_SCORE_TABLE);
+                if (score.getUserNumberOfQuestionsAnswered() > 0) {
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    scoreDatabaseReference = firebaseDatabase.getReference().child(userId).child(Constants.PATH_FIREBASE_SCORE_TABLE);
 
-                //If there is no preexisting score, push current score to Firebase. Else, get the score key and updated
-                if (score.getUserNumberOfQuestionsAnswered() == updatedScore.getUserNumberOfQuestionsAnswered()) {
-                    scoreDatabaseReference.push().setValue(updatedScore);
-                } else {
-                    String key = sharedPreferences.getString(Constants.SHARED_PREFERENCES_SCORE_KEY, Constants.CONSTANT_NULL);
-                    if (key != null) {
-                        scoreDatabaseReference.child(key).setValue(updatedScore);
+                    //If there is no preexisting score, push current score to Firebase. Else, get the score key and updated
+                    if (score.getUserNumberOfQuestionsAnswered() == updatedScore.getUserNumberOfQuestionsAnswered()) {
+                        scoreDatabaseReference.push().setValue(updatedScore);
                     } else {
-                        Timber.e("Could not find key to update score");
+                        String key = sharedPreferences.getString(Constants.SHARED_PREFERENCES_SCORE_KEY, Constants.CONSTANT_NULL);
+                        if (key != null) {
+                            scoreDatabaseReference.child(key).setValue(updatedScore);
+                        } else {
+                            Timber.e("Could not find key to update score");
+                        }
                     }
                 }
-
                 //Update results in Shared Preference;
                 final SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, MODE_PRIVATE).edit();
                 editor.putInt(Constants.SHARED_PREFERENCES_USER_TIME_POINTS, updatedScore.getUserTimePoints());
@@ -126,14 +138,31 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         //Set score text
-        binding.activityResultTvScoreQuestions.setText(String.valueOf(score.getUserQuestionPoints()));
-        binding.activityResultTvScoreTime.setText(String.valueOf(score.getUserTimePoints()));
-        binding.activityResultTvAnswersTotal.setText(String.valueOf(score.getUserNumberOfQuestionsAnswered()));
-        binding.activityResultTvAnswersCorrect.setText(String.valueOf(score.getUserNumberOfQuestionsAnsweredCorrect()));
+        if (score != null) {
+            String intro2 = String.valueOf(score.getUserNumberOfQuestionsAnsweredCorrect())
+                    + " "
+                    + getString(R.string.activity_result_intro_02a)
+                    + " "
+                    + String.valueOf(score.getUserNumberOfQuestionsAnswered())
+                    + " "
+                    + getString(R.string.activity_result_intro_02b)
+                    + "!";
+            binding.activityResultTvIntro02.setText(intro2);
+            String intro3 = getString(R.string.activity_result_intro_03a)
+                    + " "
+                    + String.valueOf(score.getUserQuestionPoints())
+                    + " "
+                    + getString(R.string.activity_result_intro_03b)
+                    + " "
+                    + String.valueOf(score.getUserTimePoints());
+            binding.activityResultTvIntro03.setText(intro3);
+        } else {
+            Timber.e("Could not display score");
+        }
+
 
         //If there are any correct answers, populate recycler view from adapter
-        if (score.getUserNumberOfQuestionsAnswered() != 0) {
-            binding.activityResultTvPercentageCorrect.setText(String.valueOf(Math.round(score.getUserNumberOfQuestionsAnsweredCorrect() / score.getUserNumberOfQuestionsAnswered())));
+        if (score.getUserNumberOfQuestionsAnswered() > 0) {
             if (answers != null && answers.size() != 0) {
                 if (questions != null && questions.size() != 0) {
                     resultAdapter.updateResults(questions, answers, correctAnswers);
@@ -148,12 +177,13 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                 }
             }
         } else {
-            binding.activityResultTvPercentageCorrect.setText(String.valueOf(0));
             Toast.makeText(this, getString(R.string.toast_no_question_answered), Toast.LENGTH_SHORT).show();
         }
 
         //Button to go back
-        binding.activityResultFinishActivity.setOnClickListener(new View.OnClickListener() {
+        binding.activityResultCvFinishingActivity.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 finish();

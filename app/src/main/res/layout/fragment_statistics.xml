@@ -1,21 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
     tools:context=".fragments.StatisticsFragment">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/fragment_statistics" />
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_statistics_rv"/>
-    </LinearLayout>
+            <!--Guidelines-->
+            <android.support.constraint.Guideline
+                android:id="@+id/fragment_statistics_start_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/fragment_statistics_end_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_medium" />
+
+            <!--High skills-->
+            <TextView
+                android:id="@+id/fragment_statistics_tv_high_skills"
+                style="@style/TextHeaderLeft"
+                android:text="@string/statistics_high_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.CardView
+                style="@style/CardViewStandard"
+                app:cardBackgroundColor="@color/colorCorrect"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_statistics_rv_high_skills"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_statistics_rv_high_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_rv_high_skills"
+                app:layout_constraintTop_toTopOf="@+id/fragment_statistics_rv_high_skills" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_statistics_rv_high_skills"
+                style="@style/RecyclerViewStandard"
+                app:layout_constraintEnd_toEndOf="@id/fragment_statistics_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_tv_high_skills" />
+
+            <!--Medium skills-->
+            <TextView
+                android:id="@+id/fragment_statistics_tv_medium_skills"
+                style="@style/TextHeaderLeft"
+                android:text="@string/statistics_medium_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_rv_high_skills" />
+
+            <android.support.v7.widget.CardView
+                style="@style/CardViewStandard"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_statistics_rv_medium_skills"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_statistics_rv_medium_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_rv_medium_skills"
+                app:layout_constraintTop_toTopOf="@+id/fragment_statistics_rv_medium_skills" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_statistics_rv_medium_skills"
+                style="@style/RecyclerViewStandard"
+                app:layout_constraintEnd_toEndOf="@id/fragment_statistics_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_tv_medium_skills" />
+
+            <!--Low skills-->
+            <TextView
+                android:id="@+id/fragment_statistics_tv_low_skills"
+                style="@style/TextHeaderLeft"
+                android:text="@string/statistics_low_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_rv_medium_skills" />
+
+            <android.support.v7.widget.CardView
+                style="@style/CardViewStandard"
+                app:cardBackgroundColor="@color/colorIncorrect"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_statistics_rv_low_skills"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_statistics_rv_low_skills"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_rv_low_skills"
+                app:layout_constraintTop_toTopOf="@+id/fragment_statistics_rv_low_skills" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_statistics_rv_low_skills"
+                style="@style/RecyclerViewStandard"
+                app:layout_constraintEnd_toEndOf="@id/fragment_statistics_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_statistics_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_tv_low_skills" />
+
+            <!--Empty view to stop view from trimming elevation shadow-->
+            <FrameLayout
+                android:id="@+id/fragment_statistics_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/container_xxsmall"
+                app:layout_constraintTop_toBottomOf="@id/fragment_statistics_rv_low_skills" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 </layout>

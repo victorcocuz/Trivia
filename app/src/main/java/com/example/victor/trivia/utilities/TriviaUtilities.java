@@ -23,6 +23,14 @@ public class TriviaUtilities {
         return 0;
     }
 
+    public static int getRemainingPoints(int score, Context context) {
+        int[] arrayLevels = context.getResources().getIntArray(R.array.array_levels);
+        for (int i = 0; i < arrayLevels.length; i++) {
+            if (isBetween(score, arrayLevels[i], arrayLevels[i + 1])) return arrayLevels[i + 1] - score;
+        }
+        return 0;
+    }
+
     private static boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x < upper;
     }

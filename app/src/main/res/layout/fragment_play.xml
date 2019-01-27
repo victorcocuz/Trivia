@@ -1,17 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
     tools:context=".fragments.PlayFragment">
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent">
+        android:layout_height="match_parent">
+
+        <!--Intro-->
+        <TextView
+            android:id="@+id/fragment_play_title"
+            style="@style/TextTitle"
+            android:layout_margin="@dimen/margin_xxxlarge"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/fragment_play_intro_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/fragment_play_title" />
 
         <TextView
-            android:id="@+id/fragment_play_button"
-            style="@style/Buttons"
-            android:text="@string/fragment_play" />
+            android:id="@+id/fragment_play_intro_01"
+            style="@style/TextHeaderCenter"
+            android:layout_marginTop="@dimen/margin_xxxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_title"
+            tools:text="@string/fragment_play_intro_01" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/fragment_play_intro_02"
+            style="@style/TextHeaderCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_intro_01"
+            tools:text="@string/fragment_play_intro_02a" />
+
+        <!--Play game-->
+        <android.support.v7.widget.CardView
+            android:id="@+id/fragment_play_button"
+            style="@style/ButtonsLarge"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/fragment_play_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_intro_02">
+
+            <TextView
+                style="@style/TextTitle"
+                android:text="@string/fragment_play_play_game"
+                android:textColor="@color/colorWhite" />
+        </android.support.v7.widget.CardView>
+
+        <!--Progress-->
+        <android.support.constraint.Guideline
+            android:id="@+id/fragment_play_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.57" />
+
+        <TextView
+            android:id="@+id/fragment_play_progress"
+            style="@style/TextHeaderCenter"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/fragment_play_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragment_play_guideline" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/fragment_play_cv_process"
+            style="@style/CardViewStandard"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_statistics_empty_view_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragment_statistics_empty_view_1" />
+
+        <FrameLayout
+            android:id="@+id/fragment_statistics_empty_view_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_progress" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_questions_answered_text"
+            style="@style/TextSubHeaderLeft"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/fragment_play_progress_questions_answered"
+            app:layout_constraintStart_toStartOf="@id/fragment_play_cv_process"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistics_empty_view_1" />
+
+        <View
+            android:id="@+id/fragment_play_v_line_01"
+            style="@style/EmptyView"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_play_cv_process"
+            app:layout_constraintStart_toStartOf="@+id/fragment_play_v_line_02"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_tv_progress_questions_answered_text" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_points_accumulated_text"
+            style="@style/TextSubHeaderLeft"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/fragment_play_progress_points_accumulated"
+            app:layout_constraintStart_toStartOf="@id/fragment_play_tv_progress_questions_answered_text"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_v_line_01" />
+
+        <View
+            android:id="@+id/fragment_play_v_line_02"
+            style="@style/EmptyView"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_play_cv_process"
+            app:layout_constraintStart_toStartOf="@+id/fragment_play_cv_process"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_tv_progress_points_accumulated_text" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_percentage_correct_text"
+            style="@style/TextSubHeaderLeft"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/fragment_play_progress_percentage_correct"
+            app:layout_constraintStart_toStartOf="@id/fragment_play_tv_progress_questions_answered_text"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_v_line_02" />
+
+        <View
+            android:id="@+id/fragment_play_v_line_03"
+            style="@style/EmptyView"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_play_v_line_02"
+            app:layout_constraintStart_toStartOf="@+id/fragment_play_cv_process"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_tv_progress_percentage_correct_text" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_average_answering_speed_text"
+            style="@style/TextSubHeaderLeft"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/fragment_play_progress_average_answering_speed"
+            app:layout_constraintStart_toStartOf="@id/fragment_play_tv_progress_questions_answered_text"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_v_line_03" />
+
+        <!--Progress values-->
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_questions_answered_value"
+            style="@style/TextSubHeaderRight"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:layout_constraintBaseline_toBaselineOf="@id/fragment_play_tv_progress_questions_answered_text"
+            app:layout_constraintEnd_toEndOf="@id/fragment_play_cv_process"
+            tools:text="25" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_points_accumulated_value"
+            style="@style/TextSubHeaderRight"
+            app:layout_constraintBaseline_toBaselineOf="@id/fragment_play_tv_progress_points_accumulated_text"
+            app:layout_constraintEnd_toEndOf="@id/fragment_play_tv_progress_questions_answered_value"
+            tools:text="630" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_percentage_correct_value"
+            style="@style/TextSubHeaderRight"
+            app:layout_constraintBaseline_toBaselineOf="@id/fragment_play_tv_progress_percentage_correct_text"
+            app:layout_constraintEnd_toEndOf="@id/fragment_play_tv_progress_questions_answered_value"
+            tools:text="87%" />
+
+        <TextView
+            android:id="@+id/fragment_play_tv_progress_average_answering_speed_value"
+            style="@style/TextSubHeaderRight"
+            app:layout_constraintBaseline_toBaselineOf="@id/fragment_play_tv_progress_average_answering_speed_text"
+            app:layout_constraintEnd_toEndOf="@id/fragment_play_tv_progress_questions_answered_value"
+            tools:text="2.34" />
+
+        <FrameLayout
+            android:id="@+id/fragment_statistics_empty_view_2"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_height="@dimen/margin_small"
+            app:layout_constraintTop_toBottomOf="@id/fragment_play_tv_progress_average_answering_speed_value" />
+
+        <!--Empty view to stop view from trimming elevation shadow-->
+        <FrameLayout
+            android:id="@+id/fragment_statistics_empty_view_3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/container_xxsmall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_statistics_empty_view_2" />
+
+    </android.support.constraint.ConstraintLayout>
 </layout>

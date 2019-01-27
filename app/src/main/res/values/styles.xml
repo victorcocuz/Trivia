@@ -1,29 +1,35 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--<item name="colorPrimaryLight"></item>-->
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhiteHint</item>
+    </style>
+
+    <!-- ToolBar -->
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
     </style>
 
     <!--Firebase themes-->
     <style name="LoginTheme" parent="FirebaseUI">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorCorrect</item>
+        <item name="colorButtonNormal">@color/colorCorrect</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
         <item name="colorControlHighlight">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowBackground">@color/colorAccent</item>
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
         <item name="android:textColorHint">@android:color/white</item>
@@ -36,10 +42,6 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="FirebaseUI.Text.Link">
-        <!--<item name="android:textColor">@color/colorSecondary</item>-->
-    </style>
-
     <style name="FirebaseUI.AuthMethodPicker.Logo">
         <item name="android:layout_width">360dp</item>
         <item name="android:layout_marginTop">36dp</item>
@@ -49,26 +51,159 @@
         <item name="android:padding">24dp</item>
     </style>
 
-    <!--App themes-->
-    <style name="Buttons" parent="AppTheme">
+    <!--Toolbar-->
+    <style name="ToolbarStandard" parent="AppTheme">
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_4</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/container_btn_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!--Cards-->
+    <style name="CardViewStandard" parent="AppTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_4</item>
+    </style>
+
+    <style name="CardViewResultAnswers" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/container_medium</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_8</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+    </style>
+
+    <!--Questions-->
+    <style name="QuestionEditText" parent="AppTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:editTextStyle">@style/TextHeaderLeft</item>
+        <item name="android:textSize">@dimen/text_sub_header</item>
+        <item name="android:padding">@dimen/margin_medium</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="QuestionEditTextSmall" parent="QuestionEditText">
+        <item name="android:layout_height">@dimen/container_medium_large</item>
+    </style>
+
+    <style name="QuestionEditTextLarge" parent="QuestionEditText">
+        <item name="android:layout_height">@dimen/container_xlarge</item>
+    </style>
+
+    <!--Buttons-->
+    <style name="Buttons" parent="AppTheme">
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/container_medium_large</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">@dimen/margin_xlarge</item>
     </style>
 
-    <style name="QuestionTextView" parent="AppTheme">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/container_btn_height</item>
+    <style name="ButtonsLarge" parent="Buttons">
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_4</item>
+        <item name="android:layout_marginStart">@dimen/margin_xxxlarge</item>
+        <item name="android:layout_marginLeft">@dimen/margin_xxxlarge</item>
+        <item name="android:layout_marginRight">@dimen/margin_xxxlarge</item>
+        <item name="android:layout_marginEnd">@dimen/margin_xxxlarge</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
-    <style name="QuestionEditText" parent="AppTheme">
-        <item name="android:background">@drawable/border_edit_text</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/container_btn_height</item>
+    <style name="ButtonsSmall" parent="Buttons">
         <item name="android:layout_margin">@dimen/margin_medium</item>
+        <item name="android:textSize">@dimen/text_header</item>
+    </style>
+
+    <!--RecyclerViews-->
+    <style name="RecyclerViewStandard" parent="AppTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_10</item>
+    </style>
+
+    <!--Empty Views-->
+    <style name="EmptyView" parent="AppTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/margin_one</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_2</item>
+    </style>
+
+    <!--Text-->
+    <style name="Text" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="TextTitle" parent="Text">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextHeader" parent="Text">
+        <item name="android:textSize">@dimen/text_header</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:paddingLeft">@dimen/margin_medium</item>
+        <item name="android:paddingRight">@dimen/margin_medium</item>
+    </style>
+
+    <style name="TextHeaderLeft" parent="TextHeader">
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="TextHeaderCenter" parent="TextHeader">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+    </style>
+
+    <style name="TextHeaderRight" parent="TextHeader">
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="TextMain" parent="Text">
+        <item name="android:textSize">@dimen/text_header</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:gravity">left|top</item>
+        <item name="android:padding">@dimen/margin_medium</item>
+    </style>
+
+    <style name="TextSubHeader" parent="Text">
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_10</item>
+        <item name="android:textSize">@dimen/text_sub_header</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextSubHeaderLeft" parent="TextSubHeader">
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+    </style>
+
+    <style name="TextSubHeaderCenter" parent="TextSubHeader">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginBottom">@dimen/margin_xsmall</item>
+    </style>
+
+    <style name="TextSubHeaderRight" parent="TextSubHeader">
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_10</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="TextBody" parent="Text">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:gravity">left</item>
     </style>
 
 </resources>

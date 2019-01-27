@@ -54,7 +54,6 @@ public class TriviaWidgetProvider extends AppWidgetProvider {
 
     public static void updateTriviaWidgets(Context context, AppWidgetManager appWidgetManager, String description, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            Timber.e("SHOW ME MORE %s", description);
             updateAppWidget(context, appWidgetManager, description, appWidgetId);
         }
     }

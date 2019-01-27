@@ -2,49 +2,120 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
     tools:context=".activities.ResultActivity">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_result_tb"
+            style="@style/ToolbarStandard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ToolBarStyle" />
 
-        <TextView
-            android:id="@+id/activity_result_tv_answers_correct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/activity_result_tv_answers_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/activity_result_tv_percentage_correct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/activity_result_tv_score_questions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/activity_result_tv_score_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
+        <!--Guidelines-->
+        <android.support.constraint.Guideline
+            android:id="@+id/activity_result_start_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/result_activity_finish_activity"
-            android:id="@+id/activity_result_finish_activity"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/activity_result_end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_medium" />
+
+        <!--Intro-->
+        <TextView
+            android:id="@+id/activity_result_tv_congratulations"
+            style="@style/TextHeaderLeft"
+            android:text="@string/activity_result_congratulations"
+            app:layout_constraintStart_toStartOf="@+id/activity_result_start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tb" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            style="@style/CardViewStandard"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/activity_result_empty_view_2"
+            app:layout_constraintEnd_toStartOf="@+id/activity_result_end_guideline"
+            app:layout_constraintStart_toStartOf="@+id/activity_result_start_guideline"
+            app:layout_constraintTop_toTopOf="@id/activity_result_empty_view_1" />
+
+        <FrameLayout
+            android:id="@+id/activity_result_empty_view_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_medium"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tv_congratulations" />
+
+        <TextView
+            android:id="@+id/activity_result_tv_intro_01"
+            style="@style/TextSubHeaderCenter"
+            android:text="@string/activity_result_intro01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_empty_view_1" />
+
+        <TextView
+            android:id="@+id/activity_result_tv_intro_02"
+            style="@style/TextSubHeaderCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tv_intro_01" />
+
+        <TextView
+            android:id="@+id/activity_result_tv_intro_03"
+            style="@style/TextSubHeaderCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tv_intro_02" />
+
+        <FrameLayout
+            android:id="@+id/activity_result_empty_view_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_medium"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tv_intro_03" />
+
+        <!--Answers breakdown-->
+        <TextView
+            android:id="@+id/activity_result_tv_answers_below"
+            style="@style/TextHeaderLeft"
+            android:text="@string/activity_result_answers_below"
+            app:layout_constraintStart_toStartOf="@+id/activity_result_start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_empty_view_2" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_result_rv_answers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/RecyclerViewStandard"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/elevation_8"
+            app:layout_constraintBottom_toTopOf="@+id/activity_result_cv_finishing_activity"
+            app:layout_constraintEnd_toEndOf="@+id/activity_result_end_guideline"
+            app:layout_constraintStart_toStartOf="@+id/activity_result_start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/activity_result_tv_answers_below"
+            tools:targetApi="lollipop" />
 
-    </LinearLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/activity_result_cv_finishing_activity"
+            style="@style/ButtonsLarge"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/activity_result_tv_finish_activity"
+                style="@style/TextTitle"
+                android:text="@string/activity_result_finish_activity"
+                android:textColor="@color/colorWhite" />
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
 </layout>

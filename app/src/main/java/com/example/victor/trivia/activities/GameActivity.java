@@ -3,6 +3,7 @@ package com.example.victor.trivia.activities;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -77,14 +79,20 @@ public class GameActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Main
+        //Initialize main components
         binding = DataBindingUtil.setContentView(this, R.layout.activity_game);
         mSavedInstanceState = savedInstanceState;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setSupportActionBar(binding.activityGameTb);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setIcon(getDrawable(R.drawable.ic_logo_small));
+            }
+        }
+        setTitle(getString(R.string.activity_game));
 
         //Reset score
-        // TODO: 1/14/2019 change to 10
-        numberOfQuestionsRemaining = 5;
+        numberOfQuestionsRemaining = getResources().getInteger(R.integer.score_questions_per_quiz);
         numberOfQuestionsAnswered = 0;
         numberOfQuestionsAnsweredCorrect = 0;
         scoreQuestion = 0;
@@ -184,8 +192,7 @@ public class GameActivity extends AppCompatActivity implements
                     if (cursorQuestions.getCount() > 0) {
 
                         //If there are less than 10 questions remaining in the database, questions remaining will be reassigned
-                        // TODO: 1/14/2019 change to 10
-                        if (cursorQuestions.getCount() < 5) {
+                        if (cursorQuestions.getCount() < getResources().getInteger(R.integer.score_questions_per_quiz)) {
                             numberOfQuestionsRemaining = cursorQuestions.getCount() - 1;
                         }
 
@@ -241,8 +248,6 @@ public class GameActivity extends AppCompatActivity implements
         //Calculate score for correct answers
         if (chosenAnswer.equals(questionCorrectAnswer)) {
             numberOfQuestionsAnsweredCorrect++;
-            // TODO: 1/14/2019 remove the fuck
-            Toast.makeText(this, "FUCK YEAH", Toast.LENGTH_SHORT).show();
             answeredStatus = Constants.ANSWER_STATUS_CORRECT;
             scoreTime = Math.round(timeLeft / (getResources().getInteger(R.integer.score_timer_tick_interval))) + 1;
             scoreTotalTime = scoreTotalTime + scoreTime;
@@ -280,7 +285,8 @@ public class GameActivity extends AppCompatActivity implements
     }
 
     private void loadNextQuestion(final Cursor cursorQuestions) {
-        Timber.e("number of questions remaining is %s", numberOfQuestionsRemaining);
+        String questionsRemaining = getResources().getInteger(R.integer.score_questions_per_quiz) - numberOfQuestionsRemaining + "/" + getResources().getInteger(R.integer.score_questions_per_quiz);
+        binding.activityGameTvQuestionsRemaining.setText(questionsRemaining);
         numberOfQuestionsRemaining = numberOfQuestionsRemaining - 1;
 
         //Load question from cursorQuestions into adapter in a random and non repeating order
@@ -315,7 +321,7 @@ public class GameActivity extends AppCompatActivity implements
 
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
-                binding.activityGameTimer.setText(String.valueOf(millisUntilFinished / getResources().getInteger(R.integer.score_timer_tick_interval)));
+                binding.activityGameTvTimer.setText(String.valueOf(millisUntilFinished / getResources().getInteger(R.integer.score_timer_tick_interval)));
             }
 
             public void onFinish() {
@@ -329,7 +335,29 @@ public class GameActivity extends AppCompatActivity implements
     }
 
     private void StartResultActivity() {
-        Score forResultscore = new Score(
+        Score forResultscore;
+        if (numberOfQuestionsAnswered > 0) {
+            forResultscore = new Score(
+                    scoreTotalQuestions,
+                    scoreTotalTime,
+                    0,
+                    numberOfQuestionsAnswered,
+                    numberOfQuestionsAnsweredCorrect,
+                    (float) numberOfQuestionsAnsweredCorrect / (float) numberOfQuestionsAnswered,
+                    totalAnswerTime / (float) numberOfQuestionsAnswered);
+        } else {
+            forResultscore = new Score(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0);
+        }
+
+        float forResultAnswerTime;
+        forResultscore = new Score(
                 scoreTotalQuestions,
                 scoreTotalTime,
                 0,

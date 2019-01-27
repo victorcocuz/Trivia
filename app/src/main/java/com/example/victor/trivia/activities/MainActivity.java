@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -12,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,13 +49,11 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
 
-    // ++TODO: 1/19/2019 check for useless implementations
-    // TODO: 1/22/2019 fragment should not move on screen turn off
-    // TODO: 1/22/2019 add questions left to game
     //Main
     ActivityMainBinding binding;
     private Bundle mSavedInstanceState;
     private String userId;
+    private int pagerPosition = 0;
 
     //Firebase
     private FirebaseDatabase firebaseDatabase;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER_ID_CURSOR_ANSWERS_ADDED = 2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Initialize main components
@@ -76,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Timber.plant(new Timber.DebugTree());
         Stetho.initializeWithDefaults(this);
         mSavedInstanceState = savedInstanceState;
+        setSupportActionBar(binding.mainActivityTb);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setIcon(getDrawable(R.drawable.ic_logo_small));
+            }
+        }
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -94,8 +100,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                         //Set up fragments and tab layout
                         FragmentAdapter generalFragmentAdapter = new FragmentAdapter(MainActivity.this, getSupportFragmentManager(), user.getUid());
+                        binding.mainActivityViewPager.setOffscreenPageLimit(3);
                         binding.mainActivityViewPager.setAdapter(generalFragmentAdapter);
                         binding.mainActivityTabLayout.setupWithViewPager(binding.mainActivityViewPager);
+                        binding.mainActivityViewPager.setCurrentItem(pagerPosition);
+
+                        if(savedInstanceState != null){
+                            pagerPosition = savedInstanceState.getInt(Constants.SAVED_INSTANCE_VIEW_PAGER_POSITION, 0);
+                            binding.mainActivityViewPager.setCurrentItem(pagerPosition);
+                        }
                     } else {
                         onSignedOutCleanUp();
                         startActivityForResult(
@@ -331,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
+        pagerPosition = binding.mainActivityViewPager.getCurrentItem();
         detachDatabaseReadListener();
     }
 
@@ -342,6 +356,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 finish();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(Constants.SAVED_INSTANCE_VIEW_PAGER_POSITION, binding.mainActivityViewPager.getCurrentItem());
     }
 
     private void onSignedInInitialize(FirebaseUser user) {

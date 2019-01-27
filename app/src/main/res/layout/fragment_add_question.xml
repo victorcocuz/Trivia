@@ -1,132 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
     tools:context=".fragments.AddQuestionFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+            <!--Guidelines-->
+            <android.support.constraint.Guideline
+                android:id="@+id/fragment_add_question_start_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/fragment_add_question_end_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_medium" />
 
             <!--Add Category-->
             <TextView
-                android:id="@+id/add_question_category_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_categories" />
+                android:id="@+id/fragment_add_question_tv_category"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_categories"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/add_question_category_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
+            <FrameLayout
+                android:id="@+id/fragment_add_question_fl_category"
+                style="@style/QuestionEditTextSmall"
+                android:background="@drawable/question_box_primary"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_category">
+
+                <Spinner
+                    android:id="@+id/fragment_add_question_sp_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorWhite"
+                    android:popupBackground="@color/colorPrimary"
+                    android:textSize="@dimen/text_header"
+                    tools:targetApi="lollipop" />
+            </FrameLayout>
 
             <!--Add Question Body-->
             <TextView
-                android:id="@+id/add_question_body_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_body" />
+                android:id="@+id/fragment_add_question_tv_body"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_body"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_fl_category" />
 
             <EditText
-                android:id="@+id/add_question_body_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_body_hint"
-                android:hint="@string/question_body_hint"
+                android:id="@+id/fragment_add_question_et_body"
+                style="@style/QuestionEditTextLarge"
+                android:autofillHints="@string/fragment_questions_hint"
+                android:background="@drawable/question_box_primary"
+                android:hint="@string/fragment_questions_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_body"
                 tools:targetApi="o" />
 
             <!--Add Correct Answer-->
             <TextView
-                android:id="@+id/add_question_answer_correct_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_correct" />
+                android:id="@+id/fragment_add_question_tv_answer_correct"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_answer_correct"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_body" />
 
             <EditText
-                android:id="@+id/add_question_answer_correct_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_correct_hint"
-                android:hint="@string/question_answer_correct_hint"
+                android:id="@+id/fragment_add_question_et_answer_correct"
+                style="@style/QuestionEditTextSmall"
+                android:autofillHints="@string/fragment_questions_correct_hint"
+                android:background="@drawable/question_box_correct"
+                android:hint="@string/fragment_questions_correct_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_answer_correct"
                 tools:targetApi="o" />
 
             <!--Add Incorrect Answer 01-->
             <TextView
-                android:id="@+id/add_question_answer_incorrect_01_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_incorrect_01" />
+                android:id="@+id/fragment_add_question_tv_answer_incorrect_01"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_incorrect_01"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_answer_correct" />
 
             <EditText
-                android:id="@+id/add_question_answer_incorrect_01_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_incorrect_01_hint"
-                android:hint="@string/question_answer_incorrect_01_hint"
+                android:id="@+id/fragment_add_question_et_answer_incorrect_01"
+                style="@style/QuestionEditTextSmall"
+                android:autofillHints="@string/fragment_questions_incorrect_01_hint"
+                android:background="@drawable/question_box_incorrect"
+                android:hint="@string/fragment_questions_incorrect_01_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_answer_incorrect_01"
                 tools:targetApi="o" />
 
             <!--Add Incorrect Answer 02-->
             <TextView
-                android:id="@+id/add_question_answer_incorrect_02_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_incorrect_02" />
+                android:id="@+id/fragment_add_question_tv_answer_incorrect_02"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_answer_incorrect_02"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_answer_incorrect_01" />
 
             <EditText
-                android:id="@+id/add_question_answer_incorrect_02_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_incorrect_02_hint"
-                android:hint="@string/question_answer_incorrect_02_hint"
+                android:id="@+id/fragment_add_question_et_answer_incorrect_02"
+                style="@style/QuestionEditTextSmall"
+                android:autofillHints="@string/fragment_questions_answer_incorrect_02_hint"
+                android:background="@drawable/question_box_incorrect"
+                android:hint="@string/fragment_questions_answer_incorrect_02_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_answer_incorrect_02"
                 tools:targetApi="o" />
 
             <!--Add Incorrect Answer 03-->
             <TextView
-                android:id="@+id/add_question_answer_incorrect_03_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_incorrect_03" />
+                android:id="@+id/fragment_add_question_answer_tv_incorrect_03"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_answer_incorrect_03"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_answer_incorrect_02" />
 
             <EditText
-                android:id="@+id/add_question_answer_incorrect_03_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_incorrect_03_hint"
-                android:hint="@string/question_answer_incorrect_03_hint"
+                android:id="@+id/fragment_add_question_et_answer_incorrect_03"
+                style="@style/QuestionEditTextSmall"
+                android:autofillHints="@string/fragment_questions_answer_incorrect_03_hint"
+                android:background="@drawable/question_box_incorrect"
+                android:hint="@string/fragment_questions_answer_incorrect_03_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_answer_tv_incorrect_03"
                 tools:targetApi="o" />
+
 
             <!--Add Description-->
             <TextView
-                android:id="@+id/add_question_description_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_description" />
+                android:id="@+id/fragment_add_question_tv_description"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_answer_description"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_answer_incorrect_03" />
 
             <EditText
-                android:id="@+id/add_question_description_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_description_hint"
-                android:hint="@string/question_answer_description_hint"
+                android:id="@+id/fragment_add_question_et_description"
+                style="@style/QuestionEditTextLarge"
+                android:autofillHints="@string/fragment_questions_answer_description_hint"
+                android:background="@drawable/question_box_primary"
+                android:hint="@string/fragment_questions_answer_description_hint"
                 android:inputType="textCapSentences"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_description"
                 tools:targetApi="o" />
 
             <!--Add photo url-->
             <TextView
-                android:id="@+id/add_question_photo_url_text"
-                style="@style/QuestionTextView"
-                android:text="@string/question_answer_photo_url" />
+                android:id="@+id/fragment_add_question_tv_photo_url"
+                style="@style/TextHeaderLeft"
+                android:text="@string/fragment_questions_answer_photo_url"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_description" />
 
             <EditText
-                android:id="@+id/add_question_photo_url_edit_text"
-                style="@style/QuestionEditText"
-                android:autofillHints="@string/question_answer_photo_url_hint"
-                android:hint="@string/question_answer_photo_url_hint"
+                android:id="@+id/fragment_add_question_et_photo_url"
+                style="@style/QuestionEditTextSmall"
+                android:autofillHints="@string/fragment_questions_answer_photo_url_hint"
+                android:background="@drawable/question_box_primary"
+                android:hint="@string/fragment_questions_answer_photo_url_hint"
                 android:inputType="textUri"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_add_question_end_guideline"
+                app:layout_constraintStart_toStartOf="@+id/fragment_add_question_start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_tv_photo_url"
                 tools:targetApi="o" />
 
             <!--Submit Question-->
-            <TextView
-                android:id="@+id/add_question_submit"
-                style="@style/Buttons"
-                android:text="@string/question_submit" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/fragment_add_question_cv_submit"
+                style="@style/ButtonsLarge"
+                android:layout_marginBottom="@dimen/margin_xxxlarge"
+                android:layout_marginTop="@dimen/margin_xxxlarge"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_add_question_et_photo_url">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/fragment_add_question_tv_submit"
+                    style="@style/TextTitle"
+                    android:text="@string/fragment_questions_submit"
+                    android:textColor="@color/colorWhite" />
+            </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>

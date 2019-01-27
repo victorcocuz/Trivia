@@ -1,5 +1,6 @@
 package com.example.victor.trivia.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -65,9 +67,9 @@ public class AddQuestionFragment extends Fragment {
         //Setup Spinner
         ArrayAdapter spinnerCategoryAdapter = ArrayAdapter.createFromResource(getContext(), R.array.array_categories, android.R.layout.simple_spinner_item);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        binding.addQuestionCategorySpinner.setAdapter(spinnerCategoryAdapter);
+        binding.fragmentAddQuestionSpCategory.setAdapter(spinnerCategoryAdapter);
 
-        binding.addQuestionCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.fragmentAddQuestionSpCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = (String) adapterView.getItemAtPosition(i);
@@ -100,37 +102,37 @@ public class AddQuestionFragment extends Fragment {
             }
         });
 
-        binding.addQuestionCategorySpinner.setOnTouchListener(touchListener);
-        binding.addQuestionAnswerCorrectEditText.setOnTouchListener(touchListener);
-        binding.addQuestionAnswerIncorrect01EditText.setOnTouchListener(touchListener);
-        binding.addQuestionAnswerIncorrect02EditText.setOnTouchListener(touchListener);
-        binding.addQuestionAnswerIncorrect03EditText.setOnTouchListener(touchListener);
-        binding.addQuestionDescriptionEditText.setOnTouchListener(touchListener);
-        binding.addQuestionPhotoUrlEditText.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionSpCategory.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtAnswerCorrect.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtAnswerIncorrect01.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtAnswerIncorrect02.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtAnswerIncorrect03.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtDescription.setOnTouchListener(touchListener);
+        binding.fragmentAddQuestionEtPhotoUrl.setOnTouchListener(touchListener);
 
         //Submit Question
-        binding.addQuestionSubmit.setOnClickListener(new View.OnClickListener() {
+        binding.fragmentAddQuestionCvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (questionCategory == Constants.QUESTION_CATEGORY_NONE) {
                     Toast.makeText(getContext(), R.string.toast_category_none_description, Toast.LENGTH_SHORT).show();
-                } else if (binding.addQuestionBodyEditText.getText().length() == 0
-                        || binding.addQuestionAnswerCorrectEditText.getText().length() == 0
-                        || binding.addQuestionAnswerIncorrect01EditText.getText().length() == 0
-                        || binding.addQuestionAnswerIncorrect02EditText.getText().length() == 0
-                        || binding.addQuestionAnswerIncorrect03EditText.getText().length() == 0
-                        || binding.addQuestionDescriptionEditText.getText().length() == 0
-                        || binding.addQuestionPhotoUrlEditText.getText().length() == 0) {
+                } else if (binding.fragmentAddQuestionEtBody.getText().length() == 0
+                        || binding.fragmentAddQuestionEtAnswerCorrect.getText().length() == 0
+                        || binding.fragmentAddQuestionEtAnswerIncorrect01.getText().length() == 0
+                        || binding.fragmentAddQuestionEtAnswerIncorrect02.getText().length() == 0
+                        || binding.fragmentAddQuestionEtAnswerIncorrect03.getText().length() == 0
+                        || binding.fragmentAddQuestionEtDescription.getText().length() == 0
+                        || binding.fragmentAddQuestionEtPhotoUrl.getText().length() == 0) {
                     Toast.makeText(getContext(), R.string.toast_question_incomplete_description, Toast.LENGTH_SHORT).show();
                 } else {
                     //Get Question and Answers from EditText
-                    questionBody = binding.addQuestionBodyEditText.getText().toString();
-                    questionAnswerCorrect = binding.addQuestionAnswerCorrectEditText.getText().toString();
-                    questionAnswerIncorrect01 = binding.addQuestionAnswerIncorrect01EditText.getText().toString();
-                    questionAnswerIncorrect02 = binding.addQuestionAnswerIncorrect02EditText.getText().toString();
-                    questionAnswerIncorrect03 = binding.addQuestionAnswerIncorrect03EditText.getText().toString();
-                    questionDescription = binding.addQuestionDescriptionEditText.getText().toString();
-                    questionPhotoUrl = binding.addQuestionPhotoUrlEditText.getText().toString();
+                    questionBody = binding.fragmentAddQuestionEtBody.getText().toString();
+                    questionAnswerCorrect = binding.fragmentAddQuestionEtAnswerCorrect.getText().toString();
+                    questionAnswerIncorrect01 = binding.fragmentAddQuestionEtAnswerIncorrect01.getText().toString();
+                    questionAnswerIncorrect02 = binding.fragmentAddQuestionEtAnswerIncorrect02.getText().toString();
+                    questionAnswerIncorrect03 = binding.fragmentAddQuestionEtAnswerIncorrect03.getText().toString();
+                    questionDescription = binding.fragmentAddQuestionEtDescription.getText().toString();
+                    questionPhotoUrl = binding.fragmentAddQuestionEtPhotoUrl.getText().toString();
 
                     //Submit question to Firebase
                     Question question = new Question(questionCategory,
@@ -145,13 +147,22 @@ public class AddQuestionFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.toast_question_submitted), Toast.LENGTH_SHORT).show();
 
                     //Empty query fields
-                    binding.addQuestionBodyEditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionAnswerCorrectEditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionAnswerIncorrect01EditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionAnswerIncorrect02EditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionAnswerIncorrect03EditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionDescriptionEditText.setText(Constants.CONSTANT_NULL);
-                    binding.addQuestionPhotoUrlEditText.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtBody.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtAnswerCorrect.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtAnswerIncorrect01.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtAnswerIncorrect02.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtAnswerIncorrect03.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtDescription.setText(Constants.CONSTANT_NULL);
+                    binding.fragmentAddQuestionEtPhotoUrl.setText(Constants.CONSTANT_NULL);
+
+                    //Close keyboard
+                    if (getActivity() != null) {
+                        View currentView = getActivity().getCurrentFocus();
+                        if (currentView != null) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                    }
                 }
             }
         });

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.fragments.AddQuestionFragment;
 import com.example.victor.trivia.fragments.PlayFragment;
-import com.example.victor.trivia.fragments.RankingsFragment;
 import com.example.victor.trivia.fragments.StatisticsFragment;
 
 /******
@@ -35,8 +34,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
             case 1:
                 return new StatisticsFragment();
             case 2:
-                return new RankingsFragment();
-            case 3:
                 return new AddQuestionFragment();
         }
         return null;
@@ -46,16 +43,18 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0: return context.getString(R.string.fragment_play);
-            case 1: return context.getString(R.string.fragment_statistics);
-            case 2: return context.getString(R.string.fragment_rankings);
-            case 3: return context.getString(R.string.fragment_add_questions);
+            case 0:
+                return context.getString(R.string.fragment_play);
+            case 1:
+                return context.getString(R.string.fragment_statistics);
+            case 2:
+                return context.getString(R.string.fragment_add_questions);
         }
-            return null;
+        return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 }

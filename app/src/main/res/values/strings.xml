@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Trivia</string>
 
+    <!--Fragments and activities-->
+    <string name="fragment_play">Play</string>
+    <string name="fragment_statistics">Statistics</string>
+    <string name="fragment_add_questions">Add Questions</string>
+    <string name="activity_game">Game</string>
+    <string name="activty_results">Results</string>
+
     <!--Game Categories-->
     <string name="category_none">Select a category</string>
     <string name="category_arts">Arts and Culture</string>
@@ -12,35 +19,53 @@
     <string name="category_social_sciences">Social Sciences</string>
     <string name="category_sport">Sport</string>
 
-    <!--Fragments-->
-    <string name="fragment_play">Play</string>
-    <string name="fragment_statistics">Statistics</string>
-    <string name="fragment_rankings">Rankings</string>
-    <string name="fragment_add_questions">Add Questions</string>
+    <!--Play Fragment-->
+    <string name="fragment_play_title">Hello </string>
+    <string name="fragment_play_intro_01">You are level </string>
+    <string name="fragment_play_intro_02a">You need </string>
+    <string name="fragment_play_intro_02b"> more points to reach level </string>
+    <string name="fragment_play_play_game">Play Game</string>
+    <string name="fragment_play_progress">Your progress</string>
+    <string name="fragment_play_progress_questions_answered">Questions answered</string>
+    <string name="fragment_play_progress_points_accumulated">Points accumulated</string>
+    <string name="fragment_play_progress_percentage_correct">Percentage correct</string>
+    <string name="fragment_play_progress_average_answering_speed">Average answering speed</string>
 
-    <!--Questions Fragment-->
-    <string name="question_categories">Categories</string>
-    <string name="question_body">Question</string>
-    <string name="question_body_hint">Write the question here</string>
-    <string name="question_answer_correct">Correct Answer</string>
-    <string name="question_answer_correct_hint">Write the correct answer here</string>
-    <string name="question_answer_incorrect_01">Incorrect Answer 1</string>
-    <string name="question_answer_incorrect_01_hint">Write the first incorrect answer here</string>
-    <string name="question_answer_incorrect_02">Incorrect Answer 2</string>
-    <string name="question_answer_incorrect_02_hint">Write the second incorrect answer here</string>
-    <string name="question_answer_incorrect_03">Incorrect Answer 3</string>
-    <string name="question_answer_incorrect_03_hint">Write the third incorrect answer here</string>
-    <string name="question_answer_description">Question Description</string>
-    <string name="question_answer_description_hint">Write a brief description of your question here </string>
-    <string name="question_answer_photo_url">Question Photo Url</string>
-    <string name="question_answer_photo_url_hint">Add the photo URL here.</string>
-    <string name="question_submit">Submit Question</string>
+    <!--Statistics Fragment-->
+    <string name="statistics_high_skills">High Skills</string>
+    <string name="statistics_medium_skills">Medium Skills</string>
+    <string name="statistics_low_skills">Low Skills</string>
+    <string name="statistics_questions_answered"> questions answered</string>
 
-    <!--Game Activity-->
-    <string name="temp_btn_finish_game">Finish Game</string>
+    <!--Add Questions Fragment-->
+    <string name="fragment_questions_categories">Categories</string>
+    <string name="fragment_questions_body">Question</string>
+    <string name="fragment_questions_hint">Write the question here</string>
+    <string name="fragment_questions_answer_correct">Correct Answer</string>
+    <string name="fragment_questions_correct_hint">Write the correct answer here</string>
+    <string name="fragment_questions_incorrect_01">Incorrect Answer 1</string>
+    <string name="fragment_questions_incorrect_01_hint">Write the first incorrect answer here</string>
+    <string name="fragment_questions_answer_incorrect_02">Incorrect Answer 2</string>
+    <string name="fragment_questions_answer_incorrect_02_hint">Write the second incorrect answer here</string>
+    <string name="fragment_questions_answer_incorrect_03">Incorrect Answer 3</string>
+    <string name="fragment_questions_answer_incorrect_03_hint">Write the third incorrect answer here</string>
+    <string name="fragment_questions_answer_description">Question Description</string>
+    <string name="fragment_questions_answer_description_hint">Write a brief description of your question here</string>
+    <string name="fragment_questions_answer_photo_url">Question Photo Url</string>
+    <string name="fragment_questions_answer_photo_url_hint">Add the photo URL here.</string>
+    <string name="fragment_questions_submit">Submit Question</string>
 
-    <!--On Result Activity-->
-    <string name="result_activity_finish_activity">Go Back to Main Menu</string>
+    <!--Results Activity-->
+    <string name="activity_result_congratulations">Congratulations!</string>
+    <string name="activity_result_intro01">You answered correct to </string>
+    <string name="activity_result_intro_02a">out of</string>
+    <string name="activity_result_intro_02b">questions!</string>
+    <string name="activity_result_intro_03a">Score:</string>
+    <string name="activity_result_intro_03b">Time bonus:</string>
+    <string name="activity_result_answers_below">See your answers below:</string>
+    <string name="activity_result_question">Question</string>
+    <string name="activity_result_time">Time:</string>
+    <string name="activity_result_finish_activity">Go Back to Main Menu</string>
 
     <!--Toast Messages-->
     <string name="toast_category_none_description">Please select a category to continue</string>
@@ -57,5 +82,10 @@
     <string name="widget_did_you_know">Did you know?</string>
     <string name="widget_show_me_more">Show me more</string>
     <string name="widget_ask_me_something">Ask me something</string>
+
+    <!--Content Descriptions-->
+    <string name="content_description_statistics_card_category_logo">Category Logo</string>
+    <string name="content_description_activity_game_timer">Timer</string>
+    <string name="content_description_activity_result_check">Check Image</string>
 </resources>
 

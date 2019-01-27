@@ -23,11 +23,7 @@ import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 import com.example.victor.trivia.databinding.FragmentStatisticsBinding;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.utilities.Constants;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +35,7 @@ import timber.log.Timber;
 public class StatisticsFragment extends Fragment implements LoaderManager.LoaderCallbacks {
 
     //Main
+    FragmentStatisticsBinding binding;
     private String userId;
     private List<Answer> answers = new ArrayList<>();
     private Context context;
@@ -46,7 +43,8 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
 
     //Loaders & adapters
     private static final int LOADER_ID_CURSOR_ANSWERED = 1;
-    StatisticsAdapter statisticsAdapter;
+    StatisticsAdapter statisticsAdapterHigh, statisticsAdapterMedium, statisticsAdapterLow;
+    RecyclerView.LayoutManager layoutManagerHigh, layoutManagerMedium, layoutManagerLow;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -55,24 +53,40 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        final FragmentStatisticsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false);
+        //Initialize main components
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false);
         View rootView = binding.getRoot();
 
+
         //Shared Preferences
-        if (getContext() != null) {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, Context.MODE_PRIVATE);
+        if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, Context.MODE_PRIVATE);
             userId = sharedPreferences.getString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMUOS);
         }
 
         numberOfCategories = getResources().getStringArray(R.array.array_categories).length - 1;
 
-        //Set up recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        binding.fragmentStatisticsRv.setLayoutManager(layoutManager);
-        binding.fragmentStatisticsRv.setHasFixedSize(true);
-        statisticsAdapter = new StatisticsAdapter(context);
-        binding.fragmentStatisticsRv.setAdapter(statisticsAdapter);
+        //Set up linear layout, adapters and recycler views
+        layoutManagerHigh = new LinearLayoutManager(context);
+        layoutManagerMedium = new LinearLayoutManager(context);
+        layoutManagerLow = new LinearLayoutManager(context);
+
+        statisticsAdapterHigh = new StatisticsAdapter(context);
+        statisticsAdapterMedium = new StatisticsAdapter(context);
+        statisticsAdapterLow = new StatisticsAdapter(context);
+
+        binding.fragmentStatisticsRvHighSkills.setLayoutManager(layoutManagerHigh);
+        binding.fragmentStatisticsRvHighSkills.setHasFixedSize(true);
+        binding.fragmentStatisticsRvHighSkills.setNestedScrollingEnabled(false);
+        binding.fragmentStatisticsRvHighSkills.setAdapter(statisticsAdapterHigh);
+        binding.fragmentStatisticsRvMediumSkills.setLayoutManager(layoutManagerMedium);
+        binding.fragmentStatisticsRvMediumSkills.setHasFixedSize(true);
+        binding.fragmentStatisticsRvMediumSkills.setAdapter(statisticsAdapterMedium);
+        binding.fragmentStatisticsRvMediumSkills.setNestedScrollingEnabled(false);
+        binding.fragmentStatisticsRvLowSkills.setLayoutManager(layoutManagerLow);
+        binding.fragmentStatisticsRvLowSkills.setHasFixedSize(true);
+        binding.fragmentStatisticsRvLowSkills.setNestedScrollingEnabled(false);
+        binding.fragmentStatisticsRvLowSkills.setAdapter(statisticsAdapterLow);
 
         getLoaderManager().initLoader(LOADER_ID_CURSOR_ANSWERED, null, this).forceLoad();
 
@@ -104,7 +118,7 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
                 int[] questionsPerCategory = new int[numberOfCategories];
                 int[] questionsPerCategoryCorrect = new int[numberOfCategories];
                 if (cursor != null && cursor.getCount() > 0) {
-                    Timber.e("cursor count is %s", cursor.getCount());
+
                     //Add counters for each category for every answer and add counters for each correct answer
                     for (int i = 0; i < cursor.getCount(); i++) {
                         cursor.moveToPosition(i);
@@ -115,26 +129,21 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
                         }
                     }
 
+                    //Calculate percentage answered correct for each category
                     int[] questionsPositions = new int[numberOfCategories];
-                    float[] questionsPerCategoryPercentage = new float[numberOfCategories];
-                    DecimalFormat decimalFormat = new DecimalFormat("##.##");
+                    int[] questionsPerCategoryPercentage = new int[numberOfCategories];
+//                    DecimalFormat decimalFormat = new DecimalFormat("##.##");
                     for (int i = 0; i < numberOfCategories; i++) {
                         questionsPositions[i] = i;
                         if (questionsPerCategory[i] > 0) {
-                            questionsPerCategoryPercentage[i] = Float.valueOf(decimalFormat.format((float) questionsPerCategoryCorrect[i] * 100 / (float) questionsPerCategory[i]));
+                            questionsPerCategoryPercentage[i] = Math.round((float) questionsPerCategoryCorrect[i] * 100 / (float) questionsPerCategory[i]);
                         } else {
-                            questionsPerCategoryPercentage[i] = Float.valueOf(decimalFormat.format((float) 0));
+                            questionsPerCategoryPercentage[i] = 0;
                         }
                     }
-                    for (int i = 0; i < numberOfCategories; i++) {
-                        Timber.e("before categories is %s", getResources().getStringArray(R.array.array_categories)[i + 1]);
-                        Timber.e("before position is %s", questionsPositions[i]);
-                        Timber.e("before percentage is %s", questionsPerCategoryPercentage[i]);
-                        Timber.e("before number answered is %s", questionsPerCategory[i]);
-                    }
 
-
-                    float temporaryQuestionPerCategoryPercentage;
+                    //Reorder categories by percentage and by number of questions answered
+                    int temporaryQuestionPerCategoryPercentage;
                     int temporaryQuestionPerCategory, temporaryQuestionPosition;
                     for (int i = 0; i < numberOfCategories; i++) {
                         for (int j = i; j > 0; j--) {
@@ -168,13 +177,51 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
                         }
                     }
 
-                    statisticsAdapter.updateResults(questionsPositions, questionsPerCategory, questionsPerCategoryPercentage);
-
+                    //Filter the question categories by answering skills, by percentage
+                    int lowSkillsCounter = 0, mediumSkillsCounter = 0, highSkillsCounter = 0;
                     for (int i = 0; i < numberOfCategories; i++) {
-                        Timber.e("category is %s", getResources().getStringArray(R.array.array_categories)[questionsPositions[i] + 1]);
-                        Timber.e("position is %s", questionsPositions[i]);
-                        Timber.e("percentage is %s", questionsPerCategoryPercentage[i]);
-                        Timber.e("questions answered are %s", questionsPerCategory[i]);
+                        if (questionsPerCategoryPercentage[i] >= 75f) {
+                            highSkillsCounter++;
+                        } else if (questionsPerCategoryPercentage[i] >= 40f && (questionsPerCategory[i] < 75f)) {
+                            mediumSkillsCounter++;
+                        } else if (questionsPerCategoryPercentage[i] < 40f) {
+                            lowSkillsCounter++;
+                        }
+                    }
+
+                    //Update recycler views to show statistics, by high, medium and low skills
+                    if (highSkillsCounter > 0) {
+                        binding.fragmentStatisticsRvHighSkills.setVisibility(View.VISIBLE);
+                        binding.fragmentStatisticsTvHighSkills.setVisibility(View.VISIBLE);
+                        statisticsAdapterHigh.updateResults(getArray(questionsPositions, 0, highSkillsCounter),
+                                getArray(questionsPerCategory, 0, highSkillsCounter),
+                                getArray(questionsPerCategoryPercentage, 0, highSkillsCounter),
+                                highSkillsCounter);
+                    } else {
+                        binding.fragmentStatisticsRvHighSkills.setVisibility(View.GONE);
+                        binding.fragmentStatisticsTvHighSkills.setVisibility(View.GONE);
+                    }
+                    if (mediumSkillsCounter > 0) {
+                        binding.fragmentStatisticsRvMediumSkills.setVisibility(View.VISIBLE);
+                        binding.fragmentStatisticsTvMediumSkills.setVisibility(View.VISIBLE);
+                        statisticsAdapterMedium.updateResults(getArray(questionsPositions, numberOfCategories - lowSkillsCounter - mediumSkillsCounter, mediumSkillsCounter),
+                                getArray(questionsPerCategory, numberOfCategories - lowSkillsCounter - mediumSkillsCounter, mediumSkillsCounter),
+                                getArray(questionsPerCategoryPercentage, numberOfCategories - lowSkillsCounter - mediumSkillsCounter, mediumSkillsCounter),
+                                mediumSkillsCounter);
+                    } else {
+                        binding.fragmentStatisticsRvMediumSkills.setVisibility(View.GONE);
+                        binding.fragmentStatisticsTvMediumSkills.setVisibility(View.GONE);
+                    }
+                    if (lowSkillsCounter > 0) {
+                        binding.fragmentStatisticsRvLowSkills.setVisibility(View.VISIBLE);
+                        binding.fragmentStatisticsTvLowSkills.setVisibility(View.VISIBLE);
+                        statisticsAdapterLow.updateResults(getArray(questionsPositions, numberOfCategories - lowSkillsCounter, lowSkillsCounter),
+                                getArray(questionsPerCategory, numberOfCategories - lowSkillsCounter, lowSkillsCounter),
+                                getArray(questionsPerCategoryPercentage, numberOfCategories - lowSkillsCounter, lowSkillsCounter),
+                                lowSkillsCounter);
+                    } else {
+                        binding.fragmentStatisticsRvLowSkills.setVisibility(View.GONE);
+                        binding.fragmentStatisticsTvLowSkills.setVisibility(View.GONE);
                     }
                 } else {
                     Timber.e("Cursor returned is null");
@@ -183,6 +230,18 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
             default:
                 Timber.e("Could not return cursor");
         }
+    }
+
+    private int[] getArray(int[] questionArray, int startValue, int counter) {
+        int[] updatedArray = new int[counter];
+        List<Integer> temporaryArray = new ArrayList<>();
+        for (int i = startValue; i < startValue + counter; i++) {
+            temporaryArray.add(questionArray[i]);
+        }
+        for (int i = 0; i < counter; i++) {
+            updatedArray[i] = temporaryArray.get(i);
+        }
+        return updatedArray;
     }
 
     @Override

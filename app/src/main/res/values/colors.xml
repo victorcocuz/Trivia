@@ -2,8 +2,10 @@
 <resources>
     <color name="colorPrimary">#466491</color>
     <color name="colorPrimaryDark">#203554</color>
-    <color name="window_background">#E9E95A</color>
-    <color name="colorAccent">#526E05</color>
-    <color name="colorSecondary">#C9221F</color>
+    <color name="colorAccent">#E9E95A</color>
+    <color name="colorCorrect">#526E05</color>
+    <color name="colorIncorrect">#C9221F</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorWhiteHint">#bfffffff</color>
+    <color name="colorShadow">#59000000</color>
 </resources>

@@ -25,4 +25,15 @@
         <item>@integer/score_limit_level_10</item>
         <item>@integer/score_limit_level_11</item>
     </string-array>
+
+    <integer-array name="array_logos">
+        <item>@drawable/ic_01_arts</item>
+        <item>@drawable/ic_02_geography</item>
+        <item>@drawable/ic_03_history</item>
+        <item>@drawable/ic_04_movies</item>
+        <item>@drawable/ic_05_music</item>
+        <item>@drawable/ic_06_science</item>
+        <item>@drawable/ic_07_social_sciences</item>
+        <item>@drawable/ic_08_sport</item>
+    </integer-array>
 </resources>
