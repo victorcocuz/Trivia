@@ -7,16 +7,16 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-//Contract imports
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.GamesEntry;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
+import com.example.victor.trivia.data.TriviaContract.GamesEntry;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 
 import timber.log.Timber;
+
+//Contract imports
 
 /******
  * Created by Victor on 1/8/2019.
@@ -55,7 +55,7 @@ public class TriviaProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = null;
+        Cursor cursor;
         switch (uriMatcher.match(uri)) {
             case CODE_QUESTIONS:
                 cursor = database.query(QuestionsEntry.QUESTIONS_TABLE_NAME,
@@ -132,7 +132,7 @@ public class TriviaProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        long id = 0;
+        long id;
 
         if (values == null || values.size() == 0) {
             return null;
@@ -240,7 +240,7 @@ public class TriviaProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        int rowsDeleted = 0;
+        int rowsDeleted;
 
         switch (uriMatcher.match(uri)) {
             case CODE_QUESTIONS:

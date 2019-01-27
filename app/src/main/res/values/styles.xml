@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textColorHint">@color/colorWhiteHint</item>
+        <item name="android:windowBackground">@color/colorAccent</item>
     </style>
 
     <!-- ToolBar -->
@@ -78,6 +79,7 @@
 
     <!--Questions-->
     <style name="QuestionEditText" parent="AppTheme">
+        <item name="android:focusable">true</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:editTextStyle">@style/TextHeaderLeft</item>
         <item name="android:textSize">@dimen/text_sub_header</item>
@@ -104,13 +106,14 @@
     </style>
 
     <style name="ButtonsLarge" parent="Buttons">
+        <item name="android:focusable">true</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_4</item>
-        <item name="android:layout_marginStart">@dimen/margin_xxxlarge</item>
-        <item name="android:layout_marginLeft">@dimen/margin_xxxlarge</item>
-        <item name="android:layout_marginRight">@dimen/margin_xxxlarge</item>
-        <item name="android:layout_marginEnd">@dimen/margin_xxxlarge</item>
-        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:layout_marginStart">@dimen/margin_xxx_large</item>
+        <item name="android:layout_marginLeft">@dimen/margin_xxx_large</item>
+        <item name="android:layout_marginRight">@dimen/margin_xxx_large</item>
+        <item name="android:layout_marginEnd">@dimen/margin_xxx_large</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="android:layout_marginTop">@dimen/margin_large</item>
         <item name="android:textSize">@dimen/text_title</item>
     </style>
 
@@ -171,13 +174,6 @@
         <item name="android:gravity">right</item>
     </style>
 
-    <style name="TextMain" parent="Text">
-        <item name="android:textSize">@dimen/text_header</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:gravity">left|top</item>
-        <item name="android:padding">@dimen/margin_medium</item>
-    </style>
-
     <style name="TextSubHeader" parent="Text">
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation_10</item>
         <item name="android:textSize">@dimen/text_sub_header</item>
@@ -192,7 +188,7 @@
 
     <style name="TextSubHeaderCenter" parent="TextSubHeader">
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginBottom">@dimen/margin_xsmall</item>
+        <item name="android:layout_marginBottom">@dimen/margin_x_small</item>
     </style>
 
     <style name="TextSubHeaderRight" parent="TextSubHeader">

@@ -2,8 +2,8 @@ package com.example.victor.trivia.utilities;
 
 //Contract imports
 
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 
 /******
  * Created by Victor on 12/4/2018.
@@ -11,7 +11,7 @@ import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 public class Constants {
 
     //Firebase paths
-    public static final String PATH_FIREBASE_SCORE_TABLE = "scoreTable";
+    public static final String PATH_FIRE_BASE_SCORE_TABLE = "scoreTable";
 
     //Intents
     public static final String INTENT_ACTIVITY_GAME_USER_ID = "intentActivityGameUserId";
@@ -21,7 +21,7 @@ public class Constants {
     public static final String INTENT_ACTIVITY_RESULT_CORRECT_ANSWERS = "intentActivityResultCorrectAnswers";
 
     //Shared preferences values
-    public static final String SHARED_PREFERENCES_NAME_USER = "sharedPrefrencesNameUser";
+    public static final String SHARED_PREFERENCES_NAME_USER = "sharedPreferencesNameUser";
     public static final String SHARED_PREFERENCES_SCORE_KEY = "sharedPreferencesScoreKey";
     public static final String SHARED_PREFERENCES_USER_ID = "sharedPreferencesUserId";
     public static final String SHARED_PREFERENCES_USER_DISPLAY_NAME = "sharedPreferencesUserDisplayName";
@@ -29,13 +29,13 @@ public class Constants {
     public static final String SHARED_PREFERENCES_USER_TIME_POINTS = "sharedPreferencesUserTimePoints";
     public static final String SHARED_PREFERENCES_USER_QUESTION_POINTS = "sharedPreferencesUserQuestionPoints";
     public static final String SHARED_PREFERENCES_USER_LEVEL = "sharedPreferencesUserLevel";
-    public static final String SHARED_PREFERENCES_USER_NUMBER_OF_QUESTIONS_ANSWERED = "sharedPreferencesUserNumberOfQuestionsANswered";
+    public static final String SHARED_PREFERENCES_USER_NUMBER_OF_QUESTIONS_ANSWERED = "sharedPreferencesUserNumberOfQuestionsAnswered";
     public static final String SHARED_PREFERENCES_USER_NUMBER_OF_QUESTIONS_ANSWERED_CORRECT = "sharedPreferencesUserNumberOfQuestionsAnsweredCorrect";
     public static final String SHARED_PREFERENCES_USER_PERCENTAGE_CORRECT = "sharedPreferencesUserPercentageCorrect";
     public static final String SHARED_PREFERENCES_USER_AVERAGE_ANSWER_TIME = "sharePreferencesUserAverageAnswerTime";
 
     //Shared preferences fallback values
-    public static final String CONSTANT_ANONYMUOS = "anonymous";
+    public static final String CONSTANT_ANONYMOUS = "anonymous";
     public static final int CONSTANT_NONE = 0;
     public static final int CONSTANT_ONE = 1;
     public static final String CONSTANT_NULL = "";
@@ -62,7 +62,7 @@ public class Constants {
     public static final int ANSWER_STATUS_CORRECT = 1;
     public static final int ANSWER_STATUS_INCORRECT = 2;
 
-    //Sqlite Database projections
+    //SqLite Database projections
     public static final String[] PROJECTION_QUESTIONS = new String[]{
             QuestionsEntry.QUESTIONS_FIREBASE_ID,
             QuestionsEntry.QUESTIONS_CATEGORY,

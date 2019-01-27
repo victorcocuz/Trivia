@@ -6,8 +6,9 @@ import android.os.Parcelable;
 /******
  * Created by Victor on 12/4/2018.
  ******/
+@SuppressWarnings("ALL")
 public class Game implements Parcelable {
-    private String[] gameAnswersFirebaseId;
+    private String[] gameAnswersFireBaseId;
     private int gameScoreTotalQuestions;
     private int gameScoreTotalTime;
 
@@ -29,31 +30,28 @@ public class Game implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-        parcel.writeStringArray(gameAnswersFirebaseId);
-        parcel.writeInt(gameScoreTotalQuestions);
-        parcel.writeInt(gameScoreTotalTime);
-    }
-
     //Constructors
-    protected Game(Parcel in) {
-        gameAnswersFirebaseId = in.createStringArray();
+    private Game(Parcel in) {
+        gameAnswersFireBaseId = in.createStringArray();
         gameScoreTotalQuestions = in.readInt();
         gameScoreTotalTime = in.readInt();
     }
 
-    public Game() {}
+    @SuppressWarnings("unused")
+    public Game() {
+    }
 
-    public Game(String[] gameAnswersFirebaseId, int gameScoreTotalQuestions, int gameScoreTotalTime) {
-        this.gameAnswersFirebaseId = gameAnswersFirebaseId;
+    public Game(String[] gameAnswersFireBaseId, int gameScoreTotalQuestions, int gameScoreTotalTime) {
+        this.gameAnswersFireBaseId = gameAnswersFireBaseId;
         this.gameScoreTotalQuestions = gameScoreTotalQuestions;
         this.gameScoreTotalTime = gameScoreTotalTime;
     }
 
-//    Getters
-    public String[] getGameAnswersFirebaseId() {return gameAnswersFirebaseId;}
-    public int getGameScoreTotalQuestions() {return gameScoreTotalQuestions;}
-    public int getGameScoreTotalTime() {return gameScoreTotalTime;}
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeStringArray(gameAnswersFireBaseId);
+        parcel.writeInt(gameScoreTotalQuestions);
+        parcel.writeInt(gameScoreTotalTime);
+    }
 }

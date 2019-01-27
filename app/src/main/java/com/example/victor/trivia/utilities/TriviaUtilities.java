@@ -15,7 +15,7 @@ public class TriviaUtilities {
         //empty constructor
     }
 
-    public static int getLevel(int score, Context context) {
+    private static int getLevel(int score, Context context) {
         int[] arrayLevels = context.getResources().getIntArray(R.array.array_levels);
         for (int i = 0; i < arrayLevels.length; i++) {
             if (isBetween(score, arrayLevels[i], arrayLevels[i + 1])) return i + 1;
@@ -26,7 +26,8 @@ public class TriviaUtilities {
     public static int getRemainingPoints(int score, Context context) {
         int[] arrayLevels = context.getResources().getIntArray(R.array.array_levels);
         for (int i = 0; i < arrayLevels.length; i++) {
-            if (isBetween(score, arrayLevels[i], arrayLevels[i + 1])) return arrayLevels[i + 1] - score;
+            if (isBetween(score, arrayLevels[i], arrayLevels[i + 1]))
+                return arrayLevels[i + 1] - score;
         }
         return 0;
     }

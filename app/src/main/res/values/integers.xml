@@ -4,9 +4,8 @@
     <!--Score-->
     <integer name="score_timer_question_interval">10000</integer>
     <integer name="score_timer_tick_interval">1000</integer>
-    <integer name="score_timer_division_rate">5</integer>
     <integer name="score_per_question">10</integer>
-    <integer name="score_questions_per_quiz">5</integer>
+    <integer name="score_questions_per_quiz">10</integer>
 
     <!--Level points system-->
     <integer name="score_limit_level_1">-1</integer>

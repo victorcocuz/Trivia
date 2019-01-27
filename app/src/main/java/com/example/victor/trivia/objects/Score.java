@@ -70,11 +70,31 @@ public class Score implements Parcelable {
     }
 
     //Getters
-    public int getUserQuestionPoints() {return userQuestionPoints;}
-    public int getUserTimePoints() {return userTimePoints;}
-    public int getUserLevel() {return userLevel;}
-    public int getUserNumberOfQuestionsAnswered() {return userNumberOfQuestionsAnswered;}
-    public int getUserNumberOfQuestionsAnsweredCorrect() {return userNumberOfQuestionsAnsweredCorrect;}
-    public float getUserPercentageCorrect() {return userPercentageCorrect;}
-    public float getUserAverageAnswerTime() {return userAverageAnswerTime;}
+    public int getUserQuestionPoints() {
+        return userQuestionPoints;
+    }
+
+    public int getUserTimePoints() {
+        return userTimePoints;
+    }
+
+    public int getUserLevel() {
+        return userLevel;
+    }
+
+    public int getUserNumberOfQuestionsAnswered() {
+        return userNumberOfQuestionsAnswered;
+    }
+
+    public int getUserNumberOfQuestionsAnsweredCorrect() {
+        return userNumberOfQuestionsAnsweredCorrect;
+    }
+
+    public float getUserPercentageCorrect() {
+        return userPercentageCorrect;
+    }
+
+    public float getUserAverageAnswerTime() {
+        return userAverageAnswerTime;
+    }
 }

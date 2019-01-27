@@ -6,16 +6,15 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,10 +22,10 @@ import com.example.victor.trivia.R;
 import com.example.victor.trivia.adapters.ResultAdapter;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 import com.example.victor.trivia.databinding.ActivityResultBinding;
-import com.example.victor.trivia.objects.Score;
-import com.example.victor.trivia.utilities.Constants;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
+import com.example.victor.trivia.objects.Score;
+import com.example.victor.trivia.utilities.Constants;
 import com.example.victor.trivia.utilities.TriviaUtilities;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,42 +35,39 @@ import java.util.List;
 
 import timber.log.Timber;
 
+@SuppressWarnings("deprecation")
 public class ResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
 
-    //Main
-    public ActivityResultBinding binding;
     private String userId;
 
     //Database
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference answersDatabaseReference;
-    DatabaseReference scoreDatabaseReference;
+    private FirebaseDatabase firebaseDatabase;
 
     //Intent information
-    ArrayList<Answer> answers;
-    ArrayList<Question> questions;
-    ArrayList<String> correctAnswers;
-    Score score;
+    private ArrayList<Answer> answers;
+    private ArrayList<Question> questions;
+    private ArrayList<String> correctAnswers;
+    private Score score;
 
     //Loaders
     private static final int LOADER_ID_CURSOR_ANSWERED = 1;
-    ResultAdapter resultAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Initialize main components
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_result);
+        //Main
+        ActivityResultBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_result);
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, MODE_PRIVATE);
-        userId = sharedPreferences.getString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMUOS);
+        userId = sharedPreferences.getString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMOUS);
         setSupportActionBar(binding.activityResultTb);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setIcon(getDrawable(R.drawable.ic_logo_small));
             }
         }
-        setTitle(R.string.activty_results);
+        setTitle(R.string.activity_results);
 
         //Get Intent
         Intent intent = getIntent();
@@ -84,7 +80,7 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.activityResultRvAnswers.setLayoutManager(layoutManager);
         binding.activityResultRvAnswers.setHasFixedSize(true);
-        resultAdapter = new ResultAdapter(this);
+        ResultAdapter resultAdapter = new ResultAdapter(this);
         binding.activityResultRvAnswers.setAdapter(resultAdapter);
 
         //If there is a saved instance state get parcelables for questions, answers and score from saved instance state
@@ -110,7 +106,7 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
 
                 if (score.getUserNumberOfQuestionsAnswered() > 0) {
                     firebaseDatabase = FirebaseDatabase.getInstance();
-                    scoreDatabaseReference = firebaseDatabase.getReference().child(userId).child(Constants.PATH_FIREBASE_SCORE_TABLE);
+                    DatabaseReference scoreDatabaseReference = firebaseDatabase.getReference().child(userId).child(Constants.PATH_FIRE_BASE_SCORE_TABLE);
 
                     //If there is no preexisting score, push current score to Firebase. Else, get the score key and updated
                     if (score.getUserNumberOfQuestionsAnswered() == updatedScore.getUserNumberOfQuestionsAnswered()) {
@@ -159,7 +155,6 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             Timber.e("Could not display score");
         }
-
 
         //If there are any correct answers, populate recycler view from adapter
         if (score.getUserNumberOfQuestionsAnswered() > 0) {
@@ -222,6 +217,7 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                         null,
                         null);
             default:
+                //noinspection ConstantConditions
                 return null;
         }
     }
@@ -247,12 +243,12 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                 }
 
                 //Setup Firebase and push answers, only if not already added
-                answersDatabaseReference = firebaseDatabase.getReference().child(userId).child(AnswersEntry.ANSWERS_TABLE_NAME);
+                DatabaseReference answersDatabaseReference = firebaseDatabase.getReference().child(userId).child(AnswersEntry.ANSWERS_TABLE_NAME);
 
                 for (int i = 0; i < answers.size(); i++) {
                     Boolean answerIsAlreadyAdded = false;
                     for (int j = 0; j < questionFirebaseIds.size(); j++) {
-                        if (answers.get(i).getAnswerFirebaseQuestionId().equals(questionFirebaseIds.get(j))) {
+                        if (answers.get(i).getAnswerFireBaseQuestionId().equals(questionFirebaseIds.get(j))) {
                             answerIsAlreadyAdded = true;
                             Timber.e("answer already added");
 
@@ -264,7 +260,7 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
                                 String[] selectionArgs = {answersFirebaseIds.get(j)};
                                 ContentValues answerValues = new ContentValues();
                                 answerValues.put(AnswersEntry.ANSWERS_FIREBASE_USER_ID, userId);
-                                answerValues.put(AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID, answers.get(i).getAnswerFirebaseQuestionId());
+                                answerValues.put(AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID, answers.get(i).getAnswerFireBaseQuestionId());
                                 answerValues.put(AnswersEntry.ANSWERS_STATUS, answers.get(i).getAnswerStatus());
                                 answerValues.put(AnswersEntry.ANSWERS_ANSWER, answers.get(i).getAnswerAnswer());
                                 answerValues.put(AnswersEntry.ANSWERS_SCORE_QUESTION, answers.get(i).getAnswerScoreQuestion());

@@ -16,8 +16,8 @@ import com.example.victor.trivia.fragments.StatisticsFragment;
  ******/
 public class FragmentAdapter extends FragmentPagerAdapter {
 
-    private Context context;
-    private String userId;
+    private final Context context;
+    private final String userId;
 
     public FragmentAdapter(Context context, FragmentManager fm, String userId) {
         super(fm);

@@ -6,14 +6,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.annotation.Nullable;
 
 import com.example.victor.trivia.data.TriviaContract;
 import com.example.victor.trivia.providers.TriviaWidgetProvider;
 
 import java.util.Random;
-
-import timber.log.Timber;
 
 /******
  * Created by Victor on 1/22/2019.
@@ -58,9 +55,9 @@ public class TriviaWidgetService extends IntentService {
         }
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetids = appWidgetManager.getAppWidgetIds(new ComponentName(this, TriviaWidgetProvider.class));
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, TriviaWidgetProvider.class));
 
         //Update all widgets
-        TriviaWidgetProvider.updateTriviaWidgets(this, appWidgetManager, description, appWidgetids);
+        TriviaWidgetProvider.updateTriviaWidgets(this, appWidgetManager, description, appWidgetIds);
     }
 }

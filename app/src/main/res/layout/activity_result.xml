@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent"
     tools:context=".activities.ResultActivity">
 
     <android.support.constraint.ConstraintLayout
@@ -116,6 +115,5 @@
                 android:text="@string/activity_result_finish_activity"
                 android:textColor="@color/colorWhite" />
         </android.support.v7.widget.CardView>
-
     </android.support.constraint.ConstraintLayout>
 </layout>

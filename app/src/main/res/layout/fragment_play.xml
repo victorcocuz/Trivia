@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent"
     tools:context=".fragments.PlayFragment">
 
     <android.support.constraint.ConstraintLayout
@@ -13,7 +12,7 @@
         <TextView
             android:id="@+id/fragment_play_title"
             style="@style/TextTitle"
-            android:layout_margin="@dimen/margin_xxxlarge"
+            android:layout_margin="@dimen/margin_xxx_large"
             android:gravity="center"
             app:layout_constraintBottom_toTopOf="@id/fragment_play_intro_01"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +25,7 @@
         <TextView
             android:id="@+id/fragment_play_intro_01"
             style="@style/TextHeaderCenter"
-            android:layout_marginTop="@dimen/margin_xxxlarge"
+            android:layout_marginTop="@dimen/margin_xxx_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -192,17 +191,16 @@
         <FrameLayout
             android:id="@+id/fragment_statistics_empty_view_2"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/margin_small"
             android:layout_height="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintTop_toBottomOf="@id/fragment_play_tv_progress_average_answering_speed_value" />
 
         <!--Empty view to stop view from trimming elevation shadow-->
         <FrameLayout
             android:id="@+id/fragment_statistics_empty_view_3"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/container_xxsmall"
+            android:layout_height="@dimen/container_xx_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_statistics_empty_view_2" />
-
     </android.support.constraint.ConstraintLayout>
 </layout>

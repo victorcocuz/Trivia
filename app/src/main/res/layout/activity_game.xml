@@ -6,8 +6,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/activity_game_tb"
@@ -66,15 +65,15 @@
             android:id="@+id/activity_game_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_xxx_large"
+            android:layout_marginRight="@dimen/margin_xxx_large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintVertical_bias="0.35"
-            android:layout_marginLeft="@dimen/margin_xxxlarge"
-            android:layout_marginRight="@dimen/margin_xxxlarge"/>
+            app:layout_constraintVertical_bias="0.35" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline2"

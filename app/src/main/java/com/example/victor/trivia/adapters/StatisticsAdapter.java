@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.victor.trivia.R;
@@ -16,7 +15,7 @@ import com.example.victor.trivia.databinding.CardStatisticsBinding;
  ******/
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.StatisticsViewHolder> {
 
-    private Context context;
+    private final Context context;
     private int[] questionsPositions;
     private int[] questionsPerCategory;
     private int[] questionsPerCategoryPercentage;
@@ -57,11 +56,6 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
         String questionsAnswered = String.valueOf(questionsPerCategory[position]) + " " + context.getString(R.string.statistics_questions_answered);
         statisticsViewHolder.cardStatisticsBinding.cardStatisticsTvNumberOfAnswers.setText(questionsAnswered);
         statisticsViewHolder.cardStatisticsBinding.cardStatisticsTvPercentageCorrect.setText(String.format("%s%%", String.valueOf(questionsPerCategoryPercentage[position])));
-
-        //Hide last line in cardview
-        if (position == counter - 1) {
-            statisticsViewHolder.cardStatisticsBinding.cardStatisticsVLine.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -73,7 +67,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
 
         private final CardStatisticsBinding cardStatisticsBinding;
 
-        public StatisticsViewHolder(CardStatisticsBinding cardStatisticsBinding) {
+        StatisticsViewHolder(CardStatisticsBinding cardStatisticsBinding) {
             super(cardStatisticsBinding.getRoot());
             this.cardStatisticsBinding = cardStatisticsBinding;
         }

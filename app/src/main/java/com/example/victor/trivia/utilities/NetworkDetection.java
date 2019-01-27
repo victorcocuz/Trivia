@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  * Created by Victor on 1/19/2019.
  ******/
 public class NetworkDetection {
-    Context context;
+    private final Context context;
 
     public NetworkDetection(Context context) {
         this.context = context;
@@ -20,9 +20,7 @@ public class NetworkDetection {
         if (connectivityManager != null) {
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
             if (info != null) {
-                if (info.getState() == NetworkInfo.State.CONNECTED) {
-                    return true;
-                }
+                return info.getState() == NetworkInfo.State.CONNECTED;
             }
         }
         return false;

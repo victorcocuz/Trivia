@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,26 +12,21 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.victor.trivia.R;
-
 import com.example.victor.trivia.adapters.AnswersAdapter;
-import com.example.victor.trivia.databinding.ActivityGameBinding;
-
-//Helpers
-import com.example.victor.trivia.objects.Score;
-import com.example.victor.trivia.utilities.Constants;
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
+import com.example.victor.trivia.databinding.ActivityGameBinding;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
+import com.example.victor.trivia.objects.Score;
+import com.example.victor.trivia.utilities.Constants;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -39,12 +35,15 @@ import java.util.List;
 
 import timber.log.Timber;
 
+//Helpers
+
+@SuppressWarnings("deprecation")
 public class GameActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks,
         AnswersAdapter.AnswersAdapterOnClickHandler {
 
-    //Main
-    public ActivityGameBinding binding;
+    //Extras for result
+    private final ArrayList<Answer> forResultAnswers = new ArrayList<>();
     private Bundle mSavedInstanceState;
 
     //Loaders
@@ -53,27 +52,31 @@ public class GameActivity extends AppCompatActivity implements
 
     //For Recycler view
     private Cursor cursorQuestions;
-    public AnswersAdapter answersAdapter;
-
-    //For question building
-    ArrayList<String> answers;
+    private final ArrayList<Question> forResultQuestions = new ArrayList<>();
+    private final ArrayList<String> forResultCorrectAnswers = new ArrayList<>();
     private String questionCorrectAnswer, questionBody;
-    public String questionFirebaseId;
+    //Main
+    private ActivityGameBinding binding;
     private String[] questionsSelectionArgs = null;
     private String questionsSelection = null;
     private List<Integer> cursorPositions = null;
+    private AnswersAdapter answersAdapter;
+
+    //For question building
+    private ArrayList<String> answers;
+    private String questionFireBaseId;
 
     //For scoring
-    CountDownTimer countDownTimer;
-    long timeLeft;
-    int scoreQuestion, scoreTime, scoreTotalQuestions, scoreTotalTime;
-    int numberOfQuestionsRemaining, numberOfQuestionsAnswered, numberOfQuestionsAnsweredCorrect;
-    float answerTime, totalAnswerTime;
-
-    //Extras for result
-    ArrayList<Answer> forResultAnswers = new ArrayList<>();
-    ArrayList<Question> forResultQuestions = new ArrayList<>();
-    ArrayList<String> forResultCorrectAnswers = new ArrayList<>();
+    private CountDownTimer countDownTimer;
+    private long timeLeft;
+    private int scoreQuestion;
+    private int scoreTime;
+    private int scoreTotalQuestions;
+    private int scoreTotalTime;
+    private int numberOfQuestionsRemaining;
+    private int numberOfQuestionsAnswered;
+    private int numberOfQuestionsAnsweredCorrect;
+    private float totalAnswerTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +143,7 @@ public class GameActivity extends AppCompatActivity implements
                         questionsSelectionArgs,
                         null);
             default:
+                //noinspection ConstantConditions
                 return null;
         }
     }
@@ -153,7 +157,7 @@ public class GameActivity extends AppCompatActivity implements
                 if (cursorAnswered != null) {
                     if (cursorAnswered.getCount() > 0) {
 
-                        //Find all questions answered filtering by FirebaseId. These will be later passed as selection arguments in the questions curosr
+                        //Find all questions answered filtering by FireBaseId. These will be later passed as selection arguments in the questions cursor
                         questionsSelectionArgs = new String[cursorAnswered.getCount()];
                         questionSelectionBuilder.append(QuestionsEntry.QUESTIONS_FIREBASE_ID + " NOT IN (");
                         for (int i = 0; i < cursorAnswered.getCount(); i++) {
@@ -238,7 +242,7 @@ public class GameActivity extends AppCompatActivity implements
         numberOfQuestionsAnswered++;
         scoreQuestion = 0;
         scoreTime = 0;
-        answerTime = (getResources().getInteger(R.integer.score_timer_question_interval) - timeLeft) / (float) getResources().getInteger(R.integer.score_timer_tick_interval);
+        float answerTime = (getResources().getInteger(R.integer.score_timer_question_interval) - timeLeft) / (float) getResources().getInteger(R.integer.score_timer_tick_interval);
         totalAnswerTime = answerTime + totalAnswerTime;
         NumberFormat formatter = NumberFormat.getNumberInstance();
         formatter.setMinimumFractionDigits(2);
@@ -267,7 +271,7 @@ public class GameActivity extends AppCompatActivity implements
                 cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_PHOTO_URL)));
         forResultQuestions.add(forResultQuestion);
 
-        Answer forResultAnswer = new Answer(questionFirebaseId,
+        Answer forResultAnswer = new Answer(questionFireBaseId,
                 answeredStatus,
                 chosenAnswer,
                 scoreQuestion,
@@ -291,7 +295,7 @@ public class GameActivity extends AppCompatActivity implements
 
         //Load question from cursorQuestions into adapter in a random and non repeating order
         cursorQuestions.moveToPosition(cursorPositions.get(numberOfQuestionsRemaining));
-        questionFirebaseId = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_FIREBASE_ID));
+        questionFireBaseId = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_FIREBASE_ID));
         questionBody = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_BODY));
         questionCorrectAnswer = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_CORRECT_ANSWER));
         String questionIncorrectAnswer1 = cursorQuestions.getString(cursorQuestions.getColumnIndex(QuestionsEntry.QUESTIONS_INCORRECT_ANSWER_01));
@@ -335,9 +339,9 @@ public class GameActivity extends AppCompatActivity implements
     }
 
     private void StartResultActivity() {
-        Score forResultscore;
+        Score forResultScore;
         if (numberOfQuestionsAnswered > 0) {
-            forResultscore = new Score(
+            forResultScore = new Score(
                     scoreTotalQuestions,
                     scoreTotalTime,
                     0,
@@ -346,7 +350,7 @@ public class GameActivity extends AppCompatActivity implements
                     (float) numberOfQuestionsAnsweredCorrect / (float) numberOfQuestionsAnswered,
                     totalAnswerTime / (float) numberOfQuestionsAnswered);
         } else {
-            forResultscore = new Score(
+            forResultScore = new Score(
                     0,
                     0,
                     0,
@@ -355,21 +359,10 @@ public class GameActivity extends AppCompatActivity implements
                     0,
                     0);
         }
-
-        float forResultAnswerTime;
-        forResultscore = new Score(
-                scoreTotalQuestions,
-                scoreTotalTime,
-                0,
-                numberOfQuestionsAnswered,
-                numberOfQuestionsAnsweredCorrect,
-                (float) numberOfQuestionsAnsweredCorrect / (float) numberOfQuestionsAnswered,
-                totalAnswerTime / (float) numberOfQuestionsAnswered);
-
         Intent goToResultActivity = new Intent(this, ResultActivity.class);
         goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_QUESTIONS_ARRAY, forResultQuestions);
         goToResultActivity.putParcelableArrayListExtra(Constants.INTENT_ACTIVITY_RESULT_ANSWERS_ARRAY, forResultAnswers);
-        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE, forResultscore);
+        goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_SCORE, forResultScore);
         goToResultActivity.putExtra(Constants.INTENT_ACTIVITY_RESULT_CORRECT_ANSWERS, forResultCorrectAnswers);
         startActivity(goToResultActivity);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

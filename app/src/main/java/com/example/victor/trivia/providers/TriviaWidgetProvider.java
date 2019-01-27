@@ -8,19 +8,16 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.example.victor.trivia.R;
-import com.example.victor.trivia.activities.GameActivity;
 import com.example.victor.trivia.activities.MainActivity;
 import com.example.victor.trivia.services.TriviaWidgetService;
-
-import timber.log.Timber;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class TriviaWidgetProvider extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, String description,
-                                int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, String description,
+                                        int appWidgetId) {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.trivia_widget_provider);
@@ -29,7 +26,7 @@ public class TriviaWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_tv_ask_more, context.getString(R.string.widget_ask_me_something));
 
         //Create intent to launch Game Activity when clicked
-        Intent activityIntent = new Intent (context, MainActivity.class);
+        Intent activityIntent = new Intent(context, MainActivity.class);
         PendingIntent activityPendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
         views.setOnClickPendingIntent(R.id.widget_tv_ask_more, activityPendingIntent);
 

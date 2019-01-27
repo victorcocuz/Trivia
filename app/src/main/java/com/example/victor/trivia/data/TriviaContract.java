@@ -12,7 +12,6 @@ public class TriviaContract {
     public static final String TRIVIA_AUTHORITY = "com.example.victor.trivia";
     private static final Uri TRIVIA_BASE_URI = Uri.parse(TRIVIA_SCHEME + TRIVIA_AUTHORITY);
 
-    public static final String TRIVIA_PATH_USERS = "users";
     public static final String TRIVIA_PATH_QUESTIONS = "questions";
     public static final String TRIVIA_PATH_SCORE = "games";
     public static final String TRIVIA_PATH_ANSWERS = "answers";
@@ -60,15 +59,7 @@ public class TriviaContract {
     }
 
     public static final class GamesEntry implements BaseColumns {
-        public static final Uri SCORE_URI = TRIVIA_BASE_URI.buildUpon()
-                .appendPath(TRIVIA_PATH_SCORE)
-                .build();
 
         public static final String SCORE_TABLE_NAME = "score";
-        public static final String SCORE_QUESTION_POINTS = "scoreQuestionPoints";
-        public static final String SCORE_TIME_POINTS = "scoreTimePoints";
-        public static final String SCORE_TOTAL_POINTS = "scoreTotalPoints";
-        public static final String SCORE_USER_LEVEL = "scoreUserLevel";
-        public static final String SCORE_NUMBER_OF_QUESTIONS_ANSWERED = "scoreNumberOfQuestionsAnswered";
     }
 }

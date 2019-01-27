@@ -31,5 +31,4 @@
                 android:startColor="@android:color/transparent" />
         </shape>
     </item>
-
 </layer-list>

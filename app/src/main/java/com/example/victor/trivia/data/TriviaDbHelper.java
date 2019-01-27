@@ -4,14 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-//Contract imports
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
+
+//Contract imports
 
 /******
  * Created by Victor on 1/8/2019.
  ******/
-public class TriviaDbHelper extends SQLiteOpenHelper {
+class TriviaDbHelper extends SQLiteOpenHelper {
 
     private static final String TRIVIA_DB_NAME = "trivia.db";
     private static final int TRIVIA_DB_VERSION = 1;

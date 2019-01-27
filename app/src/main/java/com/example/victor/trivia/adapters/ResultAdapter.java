@@ -3,16 +3,14 @@ package com.example.victor.trivia.adapters;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.victor.trivia.R;
+import com.example.victor.trivia.databinding.CardResultAnswersBinding;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
-
-import com.example.victor.trivia.databinding.CardResultAnswersBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.Objects;
  ******/
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<Question> questions;
     private List<Answer> answers;
     private List<String> correctAnswers;
@@ -134,7 +132,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
         private final CardResultAnswersBinding cardResultAnswersBinding;
 
-        public ResultViewHolder(CardResultAnswersBinding cardResultAnswersBinding) {
+        ResultViewHolder(CardResultAnswersBinding cardResultAnswersBinding) {
             super(cardResultAnswersBinding.getRoot());
             this.cardResultAnswersBinding = cardResultAnswersBinding;
         }

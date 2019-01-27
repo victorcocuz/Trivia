@@ -6,14 +6,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.victor.trivia.R;
 import com.example.victor.trivia.adapters.FragmentAdapter;
+import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.databinding.ActivityMainBinding;
 import com.example.victor.trivia.objects.Answer;
 import com.example.victor.trivia.objects.Question;
@@ -37,20 +38,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-//Helpers
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
 
+//Helpers
+
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
 
-    //Main
-    ActivityMainBinding binding;
+    private static final int RC_SIGN_IN = 1;
     private Bundle mSavedInstanceState;
     private String userId;
     private int pagerPosition = 0;
@@ -61,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ChildEventListener scoreEventListener, questionsEventListener, answersEventListener;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    public static final int RC_SIGN_IN = 1;
+    //Main
+    private ActivityMainBinding binding;
 
     //Loaders
     private static final int LOADER_ID_CURSOR_QUESTIONS_ADDED = 1;
@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         null,
                         null);
             default:
+                //noinspection ConstantConditions
                 return null;
         }
     }
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             key = dataSnapshot.getKey();
 
                             for (String questionFirebaseId : answersQuestionFirebaseIds) {
-                                if (answer.getAnswerFirebaseQuestionId().equals(questionFirebaseId)) {
+                                if (answer.getAnswerFireBaseQuestionId().equals(questionFirebaseId)) {
                                     questionIsAlreadyAdded = true;
                                 }
                             }
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 ContentValues answerValues = new ContentValues();
                                 answerValues.put(AnswersEntry.ANSWERS_FIREBASE_ID, key);
                                 answerValues.put(AnswersEntry.ANSWERS_FIREBASE_USER_ID, userId);
-                                answerValues.put(AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID, answer.getAnswerFirebaseQuestionId());
+                                answerValues.put(AnswersEntry.ANSWERS_FIREBASE_QUESTION_ID, answer.getAnswerFireBaseQuestionId());
                                 answerValues.put(AnswersEntry.ANSWERS_STATUS, answer.getAnswerStatus());
                                 answerValues.put(AnswersEntry.ANSWERS_ANSWER, answer.getAnswerAnswer());
                                 answerValues.put(AnswersEntry.ANSWERS_SCORE_QUESTION, answer.getAnswerScoreQuestion());
@@ -282,9 +283,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 answerValues.put(AnswersEntry.ANSWERS_TIME, answer.getAnswerTime());
                                 answerValues.put(AnswersEntry.ANSWERS_CATEGORY, answer.getAnswerCategory());
                                 getContentResolver().insert(AnswersEntry.ANSWERS_URI, answerValues);
-                                Timber.d("Answer was added to db %s", key);
-                            } else {
-                                Timber.d("Answer was already added in local db %s", key);
                             }
                         }
                     }
@@ -372,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         editor.putString(Constants.SHARED_PREFERENCES_USER_EMAIL, user.getEmail());
         editor.apply();
 
-        scoreDatabaseReference = firebaseDatabase.getReference().child(user.getUid()).child(Constants.PATH_FIREBASE_SCORE_TABLE);
+        scoreDatabaseReference = firebaseDatabase.getReference().child(user.getUid()).child(Constants.PATH_FIRE_BASE_SCORE_TABLE);
         scoreEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -440,13 +438,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void onSignedOutCleanUp() {
         //Set user to anonymous
-        userId = Constants.CONSTANT_ANONYMUOS;
+        userId = Constants.CONSTANT_ANONYMOUS;
 
         //Remove shared preferences
         SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, MODE_PRIVATE).edit();
-        editor.putString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMUOS);
-        editor.putString(Constants.SHARED_PREFERENCES_USER_DISPLAY_NAME, Constants.CONSTANT_ANONYMUOS);
-        editor.putString(Constants.SHARED_PREFERENCES_USER_EMAIL, Constants.CONSTANT_ANONYMUOS);
+        editor.putString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMOUS);
+        editor.putString(Constants.SHARED_PREFERENCES_USER_DISPLAY_NAME, Constants.CONSTANT_ANONYMOUS);
+        editor.putString(Constants.SHARED_PREFERENCES_USER_EMAIL, Constants.CONSTANT_ANONYMOUS);
         editor.putInt(Constants.SHARED_PREFERENCES_USER_TIME_POINTS, Constants.CONSTANT_NONE);
         editor.putInt(Constants.SHARED_PREFERENCES_USER_QUESTION_POINTS, Constants.CONSTANT_NONE);
         editor.putInt(Constants.SHARED_PREFERENCES_USER_LEVEL, Constants.CONSTANT_NONE);

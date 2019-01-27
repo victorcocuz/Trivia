@@ -16,7 +16,7 @@ import java.util.List;
  ******/
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswersViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<String> answers;
 
     public interface AnswersAdapterOnClickHandler {
@@ -62,7 +62,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswersV
 
         private final CardAnswersBinding cardAnswersBinding;
 
-        public AnswersViewHolder(CardAnswersBinding cardAnswersBinding) {
+        AnswersViewHolder(CardAnswersBinding cardAnswersBinding) {
             super(cardAnswersBinding.getRoot());
             this.cardAnswersBinding = cardAnswersBinding;
             cardAnswersBinding.getRoot().setOnClickListener(this);

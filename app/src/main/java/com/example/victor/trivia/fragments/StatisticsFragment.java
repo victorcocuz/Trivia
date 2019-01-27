@@ -1,7 +1,6 @@
 package com.example.victor.trivia.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import com.example.victor.trivia.R;
 import com.example.victor.trivia.adapters.StatisticsAdapter;
 import com.example.victor.trivia.data.TriviaContract.AnswersEntry;
 import com.example.victor.trivia.databinding.FragmentStatisticsBinding;
-import com.example.victor.trivia.objects.Answer;
-import com.example.victor.trivia.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,44 +29,37 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
+@SuppressWarnings("deprecation")
 public class StatisticsFragment extends Fragment implements LoaderManager.LoaderCallbacks {
 
     //Main
-    FragmentStatisticsBinding binding;
-    private String userId;
-    private List<Answer> answers = new ArrayList<>();
+    private FragmentStatisticsBinding binding;
     private Context context;
     private int numberOfCategories;
 
     //Loaders & adapters
     private static final int LOADER_ID_CURSOR_ANSWERED = 1;
-    StatisticsAdapter statisticsAdapterHigh, statisticsAdapterMedium, statisticsAdapterLow;
-    RecyclerView.LayoutManager layoutManagerHigh, layoutManagerMedium, layoutManagerLow;
+    private StatisticsAdapter statisticsAdapterHigh;
+    private StatisticsAdapter statisticsAdapterMedium;
+    private StatisticsAdapter statisticsAdapterLow;
 
     public StatisticsFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Initialize main components
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false);
         View rootView = binding.getRoot();
 
-
-        //Shared Preferences
-        if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME_USER, Context.MODE_PRIVATE);
-            userId = sharedPreferences.getString(Constants.SHARED_PREFERENCES_USER_ID, Constants.CONSTANT_ANONYMUOS);
-        }
-
         numberOfCategories = getResources().getStringArray(R.array.array_categories).length - 1;
 
         //Set up linear layout, adapters and recycler views
-        layoutManagerHigh = new LinearLayoutManager(context);
-        layoutManagerMedium = new LinearLayoutManager(context);
-        layoutManagerLow = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager layoutManagerHigh = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager layoutManagerMedium = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager layoutManagerLow = new LinearLayoutManager(context);
 
         statisticsAdapterHigh = new StatisticsAdapter(context);
         statisticsAdapterMedium = new StatisticsAdapter(context);
@@ -106,6 +96,7 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
                         null,
                         null);
             default:
+                //noinspection ConstantConditions
                 return null;
         }
     }
@@ -132,7 +123,6 @@ public class StatisticsFragment extends Fragment implements LoaderManager.Loader
                     //Calculate percentage answered correct for each category
                     int[] questionsPositions = new int[numberOfCategories];
                     int[] questionsPerCategoryPercentage = new int[numberOfCategories];
-//                    DecimalFormat decimalFormat = new DecimalFormat("##.##");
                     for (int i = 0; i < numberOfCategories; i++) {
                         questionsPositions[i] = i;
                         if (questionsPerCategory[i] > 0) {

@@ -3,10 +3,10 @@ package com.example.victor.trivia.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
-import com.example.victor.trivia.objects.Question;
 import com.example.victor.trivia.R;
+import com.example.victor.trivia.data.TriviaContract.QuestionsEntry;
 import com.example.victor.trivia.databinding.FragmentAddQuestionBinding;
+import com.example.victor.trivia.objects.Question;
 import com.example.victor.trivia.utilities.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,9 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class AddQuestionFragment extends Fragment {
 
-    //Firebase
-    private FirebaseDatabase firebaseDatabase;
+    //Main
     private DatabaseReference questionsDatabaseReference;
+    private Context context;
 
     //Question variables
     private int questionCategory;
@@ -39,33 +39,23 @@ public class AddQuestionFragment extends Fragment {
     private String questionDescription;
     private String questionPhotoUrl;
 
-    //Listen for changes
-    private boolean questionHasChanged = false;
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            questionHasChanged = true;
-            return false;
-        }
-    };
-
     public AddQuestionFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final FragmentAddQuestionBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_question, container, false);
         View rootView = binding.getRoot();
 
-        //Setup Firebase
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        //Setup FireBase
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         questionsDatabaseReference = firebaseDatabase.getReference().child(QuestionsEntry.QUESTIONS_TABLE_NAME);
 
         //Setup Spinner
-        ArrayAdapter spinnerCategoryAdapter = ArrayAdapter.createFromResource(getContext(), R.array.array_categories, android.R.layout.simple_spinner_item);
+        ArrayAdapter spinnerCategoryAdapter = ArrayAdapter.createFromResource(context, R.array.array_categories, android.R.layout.simple_spinner_item);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         binding.fragmentAddQuestionSpCategory.setAdapter(spinnerCategoryAdapter);
 
@@ -102,14 +92,6 @@ public class AddQuestionFragment extends Fragment {
             }
         });
 
-        binding.fragmentAddQuestionSpCategory.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtAnswerCorrect.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtAnswerIncorrect01.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtAnswerIncorrect02.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtAnswerIncorrect03.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtDescription.setOnTouchListener(touchListener);
-        binding.fragmentAddQuestionEtPhotoUrl.setOnTouchListener(touchListener);
-
         //Submit Question
         binding.fragmentAddQuestionCvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +116,7 @@ public class AddQuestionFragment extends Fragment {
                     questionDescription = binding.fragmentAddQuestionEtDescription.getText().toString();
                     questionPhotoUrl = binding.fragmentAddQuestionEtPhotoUrl.getText().toString();
 
-                    //Submit question to Firebase
+                    //Submit question to FireBase
                     Question question = new Question(questionCategory,
                             questionBody,
                             questionAnswerCorrect,
@@ -166,7 +148,12 @@ public class AddQuestionFragment extends Fragment {
                 }
             }
         });
-
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 }
